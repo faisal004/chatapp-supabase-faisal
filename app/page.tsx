@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button"
+import LoginButton from "@/components/login-logout-button"
+import UserGreetText from "@/components/user-greet-text"
 
 export default function Home() {
   return (
     <div>
-      <Button>Click me</Button>
+ <div className="">
+      <LoginButton/>
+    <UserGreetText/>
+    </div>
     </div>
   )
 }

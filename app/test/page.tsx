@@ -1,0 +1,5 @@
+const TestPage = () => {
+    return ( <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit ratione exercitationem quisquam magni minus impedit voluptatibus mollitia recusandae praesentium tempore quos error iure, omnis nulla obcaecati? Sed in molestiae recusandae eligendi, fugit illum veritatis amet magni adipisci velit, laborum dolorem perspiciatis et ipsa est possimus. Non magni ab dolorum dolorem accusantium sit qui vero ipsa. Delectus nam corporis cumque nobis modi, ducimus quae expedita, soluta cum dolorum fugit dicta quis saepe incidunt? Maxime earum nisi voluptas ea architecto, facilis facere commodi explicabo aperiam consequatur ipsum quod illum perspiciatis ducimus quas voluptatum dolore provident fugiat ratione molestias excepturi nobis? Distinctio, esse.</div> );
+}
+ 
+export default TestPage;
