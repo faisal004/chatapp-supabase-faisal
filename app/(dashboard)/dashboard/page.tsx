@@ -1,7 +1,40 @@
+"use client";
+import { useEffect, useState } from "react";
+import { createClient } from "@/util/supabase/client";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { Tables } from "@/lib/database.types";
+
+type Profile = Tables<"profiles">;
 const Dashboard = () => {
-    return ( <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, eveniet? Dolorem qui aliquid ab sit mollitia itaque, veritatis tempora quibusdam, beatae dicta enim, voluptatum omnis aspernatur est reprehenderit rem! Reiciendis doloribus dolores cum, ab, dolorem ipsum necessitatibus sequi quo, animi vitae exercitationem suscipit! Totam perspiciatis facere doloremque unde rem eum natus ea similique quidem blanditiis sequi obcaecati dicta earum, vitae ducimus beatae reprehenderit voluptas vero eos ipsum! Eum, necessitatibus vero atque vel neque voluptas deserunt veniam ipsa doloribus quasi dolores laborum cumque amet saepe, placeat qui debitis temporibus quas soluta culpa praesentium quam provident tenetur! Fugit odit dolor ratione accusamus reprehenderit est maiores delectus dignissimos, repellat aliquam quidem minus. Voluptatem quia voluptate dolorum itaque reiciendis necessitatibus ut architecto obcaecati facere officiis illo sint non consectetur amet cumque placeat illum quod nam sunt voluptatibus, est labore enim fuga. Cumque, labore assumenda. Perferendis delectus non soluta unde placeat omnis ut obcaecati, nobis magnam rerum tempore autem laboriosam, aspernatur libero error! Velit possimus nihil, sint corrupti fuga praesentium dolor! Porro quasi modi impedit? Nemo ratione quam rem odio et animi ex, exercitationem libero fugit facilis. Eaque provident temporibus maxime enim aspernatur. Ipsum maxime exercitationem recusandae laudantium aspernatur eaque ut est fuga unde nostrum commodi, ipsam voluptatibus soluta architecto, beatae quaerat mollitia modi velit vero aut, quo iusto libero ullam! Velit minus, maxime aut odit laudantium optio eius molestiae, ducimus voluptatem est enim eveniet amet dicta mollitia. Itaque nulla enim eligendi, laborum, provident nobis minus perferendis dolores corporis voluptates natus ut hic et minima necessitatibus earum tempore iure impedit nihil beatae laudantium eum voluptas! Aliquid dolor repellendus adipisci enim eveniet, modi deserunt alias quia, eos fuga labore dignissimos totam pariatur voluptatibus dicta minus. Iure, laboriosam. Perferendis quis eligendi consequatur ab fuga maxime voluptates numquam est perspiciatis cum nostrum unde eos, fugit veniam officiis mollitia voluptas ducimus. Voluptates, ducimus. Ipsam harum blanditiis optio ratione sit non consequatur alias voluptatum velit. Itaque sint quam maxime saepe? Similique sunt deleniti, molestiae, nostrum suscipit, aliquid blanditiis minima animi beatae natus obcaecati dignissimos accusamus non? Deserunt iusto rerum tenetur enim vitae, asperiores, accusamus dolorum cumque maiores sed nesciunt nobis in. Nostrum accusamus assumenda possimus repellendus numquam esse sed suscipit ad amet optio quos odio nesciunt et excepturi magnam hic enim impedit, officia, at ducimus fuga inventore natus! Nobis ullam aspernatur ipsa est, dicta alias vel laborum asperiores enim eius officia, excepturi quaerat aliquid veritatis neque sint nemo, suscipit dolorem dignissimos error! Quis ea cupiditate mollitia repellendus ut eaque deserunt quasi ipsam dolores corrupti! Minus iusto nobis quisquam nesciunt qui porro soluta consequatur officiis necessitatibus explicabo, sit tempora voluptatibus accusamus ex numquam, eligendi rem architecto molestias? Labore esse pariatur ea, aspernatur dolorum repudiandae minima voluptatum voluptas quaerat. Voluptas assumenda vero ad natus ducimus labore, recusandae nisi adipisci maxime voluptate praesentium obcaecati rem a sequi. Deleniti ipsa dicta earum vel, odio placeat sint repellat quasi at temporibus, sed eligendi autem magni ratione obcaecati odit fugiat harum. Tenetur magnam architecto earum, quasi distinctio ratione optio reprehenderit, libero blanditiis explicabo necessitatibus quidem expedita obcaecati. Illum atque fugit accusantium a non voluptas repellat nemo minus quisquam, delectus hic quibusdam impedit minima voluptatem quis provident aperiam sit libero repudiandae. Blanditiis, totam tenetur! Voluptates iure debitis commodi itaque suscipit nihil explicabo earum provident quasi nisi odit modi hic, quos veritatis iste veniam quia eos vel autem beatae voluptas porro. Odit cupiditate molestias ea minus numquam quod sapiente odio necessitatibus, aliquam dolorem eum nisi doloremque. Consequuntur amet recusandae facere? Rem incidunt consequuntur minus natus esse minima! Corporis facere temporibus dolore, eius, assumenda molestias at dolor ab ullam enim aspernatur? Nam enim eum repellat sint explicabo in saepe reprehenderit porro esse, laboriosam harum ipsum mollitia possimus quasi. Mollitia veniam cum qui exercitationem pariatur in. Error porro quasi harum nulla vel quo vitae dolor, inventore consequatur accusantium! Assumenda, id esse! Fugit deserunt amet eveniet, eaque alias, dignissimos neque ullam perferendis doloribus temporibus culpa esse, ex vitae id. Voluptatem soluta et velit nulla provident dolorem perspiciatis? Modi alias a cumque itaque perspiciatis nulla repellat aspernatur dignissimos dolor consequuntur quis maxime magnam aliquid, mollitia eius dolore error doloremque quia quidem vel magni consequatur dolorem! Nulla quibusdam assumenda sunt sit atque? Ipsam eos, vero consectetur consequuntur ipsa voluptatibus sequi repudiandae nemo assumenda. Soluta ab ipsum aliquam quasi? Praesentium suscipit cupiditate natus vel voluptatum repellendus saepe deleniti molestias necessitatibus corporis numquam aliquid laudantium, at perspiciatis, possimus nesciunt iusto. Sint ex eum dolorum id, magni provident officia rerum velit odit cumque dicta ipsa, totam doloribus quis quam facilis reprehenderit incidunt? Pariatur minima, quod neque rerum ex aperiam nihil enim nostrum ipsa sequi, corrupti quasi qui eius et distinctio dignissimos est eligendi? Non mollitia molestiae ipsam temporibus voluptate harum corrupti voluptatum repellat sunt quasi ea, modi cumque pariatur enim repellendus hic sequi! Officia eligendi repudiandae modi dolorem explicabo eum at necessitatibus doloribus cumque, voluptates odio repellendus neque hic consectetur quia suscipit rerum exercitationem. Magnam illo ab saepe cupiditate necessitatibus distinctio error sed ratione officiis, minima incidunt suscipit quaerat rerum illum, doloribus doloremque impedit dolorem animi! Dolor distinctio exercitationem rem cupiditate explicabo repudiandae odio aliquid error laborum, ducimus dignissimos eius officia atque mollitia id accusamus ex suscipit praesentium ipsum totam quam reiciendis nemo, aut ut? Dignissimos temporibus, earum sequi velit voluptates minus ea eveniet molestiae ab eius quam libero sunt laudantium aperiam ducimus corrupti nam voluptatibus dolorem odit quibusdam, repellat dolor ullam. Quos cupiditate sed minima. Veritatis deserunt quae in deleniti ad repellendus, quo explicabo debitis minus vel tempore molestias ipsum corporis quibusdam, et ut, reprehenderit eum ex modi quasi exercitationem consequatur ea optio. Ipsam consequatur aspernatur suscipit alias odio esse quia, vel cupiditate fugiat nam perspiciatis et explicabo reiciendis sint consectetur eveniet rerum repellat. Perferendis facilis magnam in, iure incidunt, possimus iusto quasi quod labore enim esse illo expedita. Soluta iusto sint, maxime assumenda molestias nesciunt libero sunt consectetur? Iusto aliquid assumenda modi aut, nam beatae eaque debitis porro veniam quos? Laborum aperiam aut, reiciendis enim odit veritatis omnis, voluptates tenetur laboriosam iste eius, nobis id perspiciatis in quaerat ea. Excepturi quasi deserunt nisi? Officiis?
-    </div> );
-}
- 
+  const user = useCurrentUser();
+  const [users, setUsers] = useState<Profile[]>([]);
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    if (user) fetchUsers();
+  }, [user]);
+
+  const fetchUsers = async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .neq("id", user?.id);
+
+    if (error) console.error(error);
+    else setUsers(data);
+  };
+
+  return (
+    <div>
+      <h2>Users</h2>
+      <ul>
+        {users.map((u) => (
+          <li key={u.id}>{u.full_name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 export default Dashboard;
