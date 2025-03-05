@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { signout } from "../lib/auth-actions";
 import { createClient } from "@/util/supabase/client";
 
@@ -20,16 +20,17 @@ const LoginButton = () => {
     fetchUser();
   }, []);
   if (user) {
-    return (
-      <Button
-        onClick={() => {
-          signout();
-          setUser(null);
-        }}
-      >
-        Log out
-      </Button>
-    );
+    redirect("/dashboard")
+    // return (
+    //   <Button
+    //     onClick={() => {
+    //       signout();
+    //       setUser(null);
+    //     }}
+    //   >
+    //     Log out
+    //   </Button>
+    // );
   }
   return (
     <Button

@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/util/supabase/client";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Tables } from "@/lib/database.types";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Navbar from "../_components/navbar";
+import ChatComponent from "../_components/chat-component";
 
 
 type Profile = Tables<"profiles">;
 const Dashboard = () => {
   const user = useCurrentUser();
-  const router = useRouter()
   const [users, setUsers] = useState<Profile[]>([]);
+  const [chatId,setChatId]=useState("")
 
   const supabase = createClient();
 
@@ -51,7 +52,7 @@ const Dashboard = () => {
       }
   
       if (chatId) {
-        router.push(`/dashboard/c/${chatId}`); 
+        setChatId(chatId)
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -70,7 +71,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h2>Users</h2>
+    <Navbar/>
       <ul>
         {users.map((u) => (
           <li key={u.id}>{u.full_name}
@@ -79,6 +80,7 @@ const Dashboard = () => {
           </li>
         ))}
       </ul>
+      <ChatComponent id={chatId}/>
     </div>
   );
 };
