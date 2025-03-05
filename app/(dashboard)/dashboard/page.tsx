@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/util/supabase/client";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Tables } from "@/lib/database.types";
-import { Button } from "@/components/ui/button";
 import Navbar from "../_components/navbar";
 import ChatComponent from "../_components/chat-component";
+import UsersSidebar from "../_components/users-sidebar";
 
 
 type Profile = Tables<"profiles">;
 const Dashboard = () => {
   const user = useCurrentUser();
   const [users, setUsers] = useState<Profile[]>([]);
-  const [chatId,setChatId]=useState("")
+  const [chatId, setChatId] = useState("")
 
   const supabase = createClient();
 
@@ -28,29 +28,29 @@ const Dashboard = () => {
           `and(user1.eq.${user.id},user2.eq.${receiverId}),and(user1.eq.${receiverId},user2.eq.${user.id})`
         )
         .single();
-  
+
       let chatId = existingChat?.id;
-  
+
       if (fetchError && fetchError.code !== "PGRST116") {
         console.error("Error fetching chat:", fetchError);
         return;
       }
-  
+
       if (!chatId) {
         const { data, error: insertError } = await supabase
           .from("chats")
           .insert([{ user1: user.id, user2: receiverId }])
           .select("id")
           .single();
-  
+
         if (insertError) {
           console.error("Error creating chat:", insertError);
           return;
         }
-  
-        chatId = data?.id; 
+
+        chatId = data?.id;
       }
-  
+
       if (chatId) {
         setChatId(chatId)
       }
@@ -58,7 +58,7 @@ const Dashboard = () => {
       console.error("Unexpected error:", err);
     }
   };
-  
+
   const fetchUsers = async () => {
     const { data, error } = await supabase
       .from("profiles")
@@ -70,17 +70,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-    <Navbar/>
-      <ul>
-        {users.map((u) => (
-          <li key={u.id}>{u.full_name}
-            <Button onClick={() => startChat(u.id)}>Chat</Button>
+    <div className=" container mx-auto">
+      <Navbar />
+      <div className="flex w-full">
+        <div className=" w-1/3 ">
+          <UsersSidebar users={users} startChat={startChat} />
 
-          </li>
-        ))}
-      </ul>
-      <ChatComponent id={chatId}/>
+        </div>
+
+        <div className="w-full  ">
+
+          <ChatComponent id={chatId} />
+        </div>
+      </div>
+
+
     </div>
   );
 };

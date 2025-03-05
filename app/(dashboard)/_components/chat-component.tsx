@@ -8,7 +8,7 @@ import { createClient } from "@/util/supabase/client";
 type Message = Tables<"messages">;
 
 
-const ChatComponent = ({id}:{id:string}) => {
+const ChatComponent = ({ id }: { id: string }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const supabase = createClient();
@@ -54,19 +54,19 @@ const ChatComponent = ({id}:{id:string}) => {
     };
 
     return (
-        <div>
-            {id && <div>
+        <div className="w-full">
+            {id && <div className="w-full">
+                <div className="w-full">
+                    {messages.map((message) => (
+                        <div key={message.id}>{message.content}</div>
+                    ))}
+                </div>
                 <div>
-                {messages.map((message) => (
-                    <div key={message.id}>{message.content}</div>
-                ))}
-            </div>
-            <div>
-            <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message" />
-            <button onClick={handleSendMessage}>Send</button>
-            </div>
-            </div> }
-          
+                    <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message" />
+                    <button onClick={handleSendMessage}>Send</button>
+                </div>
+            </div>}
+
         </div>
     );
 };
