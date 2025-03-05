@@ -1,16 +1,12 @@
 "use client"
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
 import React, { useEffect, useState } from "react";
 
 
-interface Message {
-    id?: number;
-    chat_id: string;
-    sender_id: string;
-    content: string;
-    created_at?: string;
-}
+type Message = Tables<"messages">;
+
 
 const ChatPage = (props: { params: Promise<{ id: string }> }) => {
     const params = React.use(props.params);
