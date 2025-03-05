@@ -1,43 +1,55 @@
+import { useState } from "react";
 import { Tables } from "@/lib/database.types";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 
 type Profile = Tables<"profiles">;
 
 interface SidebarProps {
-    users: Profile[];
-    startChat: (receiverId: string) => void;
+  users: Profile[];
+  startChat: (receiverId: string) => void;
 }
 
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
-    return (
-        <div className=" min-h-[calc(100vh-58px)] bg-gray-50 p-2  ">
-            <ul>
-                {users && users.map((u) => (
-                    <Card key={u.id} className="p-3 overflow-hidden rounded-[5px] border-0 bg-transparent shadow-none hover:bg-gray-200 cursor-pointer" onClick={() => startChat(u.id)}>
-                        <div className="flex gap-3">
-                            <Avatar>
-                                <AvatarImage src={u.avatar_url as string} />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <div>
-                                <div className="text-sm font-semibold">
-                                    {u.full_name}
-                                </div><div className="text-xs line-clamp-1">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, fugit.
-                                </div>
-                            </div>
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-                        </div>
+  const handleUserClick = (userId: string) => {
+    setSelectedUserId(userId);
+    startChat(userId);
+  };
 
-
-
-                    </Card>
-                ))}
-            </ul>
-
-        </div>
-    );
+  return (
+    <div className="min-h-[calc(100vh-58px)] bg-gray-50 p-2">
+      <ul>
+        {users.map((u) => (
+          <Card
+            key={u.id}
+            className={`p-3 overflow-hidden rounded-[5px] border-0 cursor-pointer 
+              ${
+                selectedUserId === u.id
+                  ? "bg-gray-200 hover:bg-gray-300"
+                  : "bg-transparent hover:bg-gray-100"
+              } shadow-none`}
+            onClick={() => handleUserClick(u.id)}
+          >
+            <div className="flex gap-3">
+              <Avatar>
+                <AvatarImage src={u.avatar_url as string} />
+                <AvatarFallback>{u.full_name?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <div className="text-sm font-semibold">{u.full_name}</div>
+                <div className="text-xs line-clamp-1">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Autem, fugit.
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
-export default UsersSidebar
+export default UsersSidebar;
