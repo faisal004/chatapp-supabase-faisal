@@ -11,10 +11,10 @@ interface SidebarProps {
 
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     return (
-        <div className=" min-h-[calc(100vh-58px)] bg-gray-50   ">
+        <div className=" min-h-[calc(100vh-58px)] bg-gray-50 p-2  ">
             <ul>
                 {users && users.map((u) => (
-                    <Card key={u.id} className="p-3 overflow-hidden rounded-none border-t-0" onClick={() => startChat(u.id)}>
+                    <Card key={u.id} className="p-3 overflow-hidden rounded-[5px] border-0 bg-transparent shadow-none hover:bg-gray-200 cursor-pointer" onClick={() => startChat(u.id)}>
                         <div className="flex gap-3">
                             <Avatar>
                                 <AvatarImage src={u.avatar_url as string} />
