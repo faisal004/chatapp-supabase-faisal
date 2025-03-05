@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { checkChatAccess, fetchMessages, sendMessage } from "@/lib/queries/chatQueries";
+import { redirect } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import React, { useEffect, useState } from "react";
-
 
 type Message = Tables<"messages">;
 
@@ -12,23 +13,43 @@ const ChatPage = (props: { params: Promise<{ id: string }> }) => {
     const params = React.use(props.params);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
-
+    const [chatAccess, setChatAccess] = useState<boolean | null>(null);
     const supabase = createClient();
     const user = useCurrentUser();
 
     useEffect(() => {
-        if (params.id) {
-            fetchMessages();
+        const verifyChatAccess = async () => {
+            if (!user) {
+                redirect("/");
+                return;
+            }
+
+            const { chat, error } = await checkChatAccess(params.id, user.id);
+            if (error || !chat) {
+                setChatAccess(false);
+                redirect("/");
+                return;
+            }
+
+            setChatAccess(true);
+        };
+
+        if (user) verifyChatAccess();
+    }, [params.id, user]);
+
+    useEffect(() => {
+        if (chatAccess && params.id) {
+            loadMessages();
 
             const channel = supabase
-                .channel('messages')
+                .channel("messages")
                 .on(
-                    'postgres_changes', 
-                    { 
-                        event: 'INSERT', 
-                        schema: 'public', 
-                        table: 'messages',
-                        filter: `chat_id=eq.${params.id}`
+                    "postgres_changes",
+                    {
+                        event: "INSERT",
+                        schema: "public",
+                        table: "messages",
+                        filter: `chat_id=eq.${params.id}`,
                     },
                     (payload) => {
                         setMessages((prev) => [...prev, payload.new as Message]);
@@ -40,30 +61,17 @@ const ChatPage = (props: { params: Promise<{ id: string }> }) => {
                 supabase.removeChannel(channel);
             };
         }
-    }, [params.id, supabase]);
+    }, [params.id, chatAccess]);
 
-    const fetchMessages = async () => {
-        const { data, error } = await supabase
-            .from("messages")
-            .select("*")
-            .eq("chat_id", params.id)
-            .order("created_at", { ascending: true });
-
+    const loadMessages = async () => {
+        const { messages, error } = await fetchMessages(params.id);
         if (error) console.error(error);
-        else setMessages(data || []);
+        else setMessages(messages);
     };
 
-    const sendMessage = async () => {
+    const handleSendMessage = async () => {
         if (newMessage.trim() === "" || !user) return;
-
-        const { error } = await supabase.from("messages").insert([
-            {
-                chat_id: params.id,
-                sender_id: user.id,
-                content: newMessage,
-            },
-        ]);
-
+        const { error } = await sendMessage(params.id, user.id, newMessage);
         if (!error) setNewMessage("");
     };
 
@@ -71,19 +79,13 @@ const ChatPage = (props: { params: Promise<{ id: string }> }) => {
         <div>
             <div>
                 {messages.map((message) => (
-                    <div key={message.id}>
-                        {message.content}
-                    </div>
+                    <div key={message.id}>{message.content}</div>
                 ))}
             </div>
-            <input 
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message"
-            />
-            <button onClick={sendMessage}>Send</button>
+            <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message" />
+            <button onClick={handleSendMessage}>Send</button>
         </div>
     );
-}
+};
 
 export default ChatPage;
