@@ -74,7 +74,7 @@ const Dashboard = () => {
       <ul>
         {users.map((u) => (
           <li key={u.id}>{u.full_name}
-            <Button onClick={() => startChat(user.id)}>Chat</Button>
+            <Button onClick={() => startChat(u.id)}>Chat</Button>
 
           </li>
         ))}
