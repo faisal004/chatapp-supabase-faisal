@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
+import { CheckCheck } from "lucide-react";
 
 type Profile = Tables<"profiles">;
 
@@ -44,10 +45,16 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               </Avatar>
               <div>
                 <div className="text-sm font-semibold">{u.full_name}</div>
+                <div className="flex items-center">
                 <div className="text-xs line-clamp-1">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Autem, fugit.
                 </div>
+                <div>
+                  <CheckCheck className="size-4 text-green-800"/>
+                </div>
+                </div>
+                
               </div>
             </div>
           </Card>
