@@ -91,10 +91,10 @@ const ChatComponent = ({ id }: { id: string }) => {
 
     return (
         <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative" >
-            <div className=" absolute inset-0 z-10 " style={{ 
-          backgroundImage: "linear-gradient(rgba(229,221,213,0.5), rgba(229,221,213,0.5))", 
-          backgroundSize: "cover" 
-        }}></div>
+            <div className=" absolute inset-0 z-10 " style={{
+                backgroundImage: "linear-gradient(rgba(229,221,213,0.5), rgba(229,221,213,0.5))",
+                backgroundSize: "cover"
+            }}></div>
 
             {id && chatPartner && <div className="bg-white flex items-center justify-between shadow-xs border-b border-b-gray-400 z-50 absolute top-0 w-full h-12 pl-2 pr-4">
                 <div className="flex items-center gap-2">
@@ -110,34 +110,33 @@ const ChatComponent = ({ id }: { id: string }) => {
             {id ? (
                 <div className="w-full pt-12 px-4 z-50 " >
                     <div className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2" id="chatcontainer" style={{ height: "calc(100vh - 12rem)" }}>
-                    {messages.map((message) => {
-  const isCurrentUser = message.sender_id === user?.id;
-  return (
-    <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
-      <div className="flex gap-1">
-        {isCurrentUser ? "" : <Avatar className="size-6">
-          <AvatarImage src={chatPartner?.avatar_url as string} />
-          <AvatarFallback>FB</AvatarFallback>
-        </Avatar>}
-        <Card
-          className={`p-2 rounded-lg min-w-32 max-w-xs break-words ${
-            isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
-          }`}
-        >
-          <div className="flex flex-col">
-            <div className="text-xs font-medium text-emerald-700 mb-1">
-              {isCurrentUser ? "You" : (<span>{chatPartner?.full_name}</span>)}
-            </div>
-            {message.content}
-            {/* <div className="text-right text-xs text-gray-500 mt-1">
+                        {messages.map((message) => {
+                            const isCurrentUser = message.sender_id === user?.id;
+                            return (
+                                <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+                                    <div className="flex gap-1">
+                                        {isCurrentUser ? "" : <Avatar className="size-6">
+                                            <AvatarImage src={chatPartner?.avatar_url as string} />
+                                            <AvatarFallback>FB</AvatarFallback>
+                                        </Avatar>}
+                                        <Card
+                                            className={`p-2 rounded-lg min-w-32 max-w-xs break-words ${isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
+                                                }`}
+                                        >
+                                            <div className="flex flex-col">
+                                                <div className="text-xs font-medium text-emerald-700 mb-1">
+                                                    {isCurrentUser ? "You" : (<span>{chatPartner?.full_name}</span>)}
+                                                </div>
+                                                {message.content}
+                                                {/* <div className="text-right text-xs text-gray-500 mt-1">
               {message.timestamp}
             </div> */}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-})}
+                                            </div>
+                                        </Card>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             ) : (
