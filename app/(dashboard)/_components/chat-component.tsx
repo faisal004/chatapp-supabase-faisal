@@ -105,7 +105,7 @@ const ChatComponent = ({ id }: { id: string }) => {
     };
 
     return (
-        <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative">
+        <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative ">
             <div className="absolute inset-0 z-10" style={{
                 backgroundImage: "linear-gradient(rgba(229,221,213,0.5), rgba(229,221,213,0.5))",
                 backgroundSize: "cover"

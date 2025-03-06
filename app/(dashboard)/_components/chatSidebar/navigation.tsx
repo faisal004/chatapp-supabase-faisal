@@ -5,8 +5,6 @@ import {
     Bell,
     FileText,
     Globe,
-    Home,
-    MessageCircle,
     Settings,
     Shield,
     Star,
@@ -14,7 +12,6 @@ import {
     Users,
 } from "lucide-react";
 import { NavItem } from "./nav-items";
-import Toggle from "./toggle";
 
 
 
@@ -22,16 +19,7 @@ export const Navigation = () => {
     const pathname = usePathname();
 
     const routes = [
-        {
-            label: "Home",
-            href: `#1`,
-            icon: Home,
-        },
-        {
-            label: "Chat",
-            href: `/dashboard`,
-            icon: MessageCircle,
-        },
+      
         {
             label: "Trending",
             href: `#3`,
@@ -76,7 +64,7 @@ export const Navigation = () => {
 
 
     return (
-        <div id="sidebar" className=" flex flex-col items-center justify-between  h-full overflow-y-auto overflow-x-hidden">
+        <div id="sidebar" className=" flex flex-col items-center justify-between overflow-y-auto overflow-x-hidden  h-full">
    <ul className="space-y-1 px-2  pt-4 lg:pt-0">
             {routes.map((route) => (
                 <NavItem
@@ -89,7 +77,7 @@ export const Navigation = () => {
             ))}
            
         </ul>
-        <Toggle />
+      
         </div>
      
     );

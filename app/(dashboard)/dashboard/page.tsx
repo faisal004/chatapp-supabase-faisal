@@ -6,6 +6,7 @@ import { Tables } from "@/lib/database.types";
 import Navbar from "../_components/navbar";
 import ChatComponent from "../_components/chat-component";
 import UsersSidebar from "../_components/users-sidebar";
+import ChatSidebar from "../_components/chatSidebar";
 
 
 type Profile = Tables<"profiles">;
@@ -72,7 +73,7 @@ const Dashboard = () => {
   return (
     <div className=" container mx-auto">
       <Navbar />
-      <div className="flex w-full border">
+      <div className="flex w-full border ">
         <div className=" w-1/3 ">
           <Suspense fallback={<div>Loading...</div>}>
             <UsersSidebar users={users} startChat={startChat} />
@@ -81,10 +82,12 @@ const Dashboard = () => {
 
         </div>
 
-        <div className="w-full  ">
+        <div className="w-full mr-[60px]  ">
 
           <ChatComponent id={chatId} />
+   
         </div>
+        <ChatSidebar/>
       </div>
 
 

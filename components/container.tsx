@@ -16,7 +16,7 @@ export const Container = ({
 
     return (
         <div className={cn(
-            "flex-1 overflow-hidden transition-all duration-200 ease-in-out ml-[60px]",
+            "flex-1 overflow-hidden transition-all duration-200 ease-in-out ml-[60px] ",
 
         )}>
             {children}
