@@ -8,6 +8,7 @@ import { Mic, Paperclip, Search, Send, Smile } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EmojiPicker from "emoji-picker-react";
+import { formatWhatsAppDate } from "@/util/fucntions/formatDate";
 
 type Message = Tables<"messages">;
 
@@ -111,7 +112,7 @@ const ChatComponent = ({ id }: { id: string }) => {
             </div>}
             {id ? (
                 <div className="w-full pt-12 px-4 z-50 " >
-                    <div className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2" id="chatcontainer" style={{ height: "calc(100vh - 12rem)" }}>
+                    <div className="w-full flex flex-col gap-2 overflow-y-auto z-50 py-2" id="chatcontainer" style={{ height: "calc(100vh - 12rem)" }}>
                         {messages.map((message) => {
                             const isCurrentUser = message.sender_id === user?.id;
                             return (
@@ -130,9 +131,9 @@ const ChatComponent = ({ id }: { id: string }) => {
                                                     {isCurrentUser ? "You" : (<span>{chatPartner?.full_name}</span>)}
                                                 </div>
                                                 {message.content}
-                                                {/* <div className="text-right text-xs text-gray-500 mt-1">
-              {message.timestamp}
-            </div> */}
+                                                <div className="text-right text-[10px] text-gray-500 mt-1">
+                                                    {formatWhatsAppDate(message.created_at as string)}
+                                                </div>
                                             </div>
                                         </Card>
                                     </div>
