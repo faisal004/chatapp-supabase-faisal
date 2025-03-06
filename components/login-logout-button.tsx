@@ -2,12 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { redirect, useRouter } from "next/navigation";
-import { signout } from "../lib/auth-actions";
 import { createClient } from "@/util/supabase/client";
 
-
+interface User {
+  user_metadata: {
+      full_name?: string;
+  };
+}
 const LoginButton = () => {
-  const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const supabase = createClient();
   useEffect(() => {
@@ -18,6 +21,7 @@ const LoginButton = () => {
       setUser(user);
     };
     fetchUser();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (user) {
     redirect("/dashboard")

@@ -3,8 +3,14 @@
 import { createClient } from "@/util/supabase/client";
 import React, { useEffect, useState } from "react";
 
+interface User {
+    user_metadata: {
+        full_name?: string;
+    };
+}
 const UserGreetText = () => {
-    const [user, setUser] = useState<any>(null);
+
+    const [user, setUser] = useState<User | null>(null);
     const supabase = createClient();
     useEffect(() => {
         const fetchUser = async () => {
@@ -14,6 +20,7 @@ const UserGreetText = () => {
             setUser(user);
         };
         fetchUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     if (user !== null) {
         console.log(user);
