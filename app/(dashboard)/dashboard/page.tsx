@@ -74,7 +74,7 @@ const Dashboard = () => {
     <div className=" container mx-auto">
       <Navbar />
       <div className="flex w-full border ">
-        <div className=" w-1/3 ">
+        <div className=" md:w-1/3 w-full ">
           <Suspense fallback={<div>Loading...</div>}>
             <UsersSidebar users={users} startChat={startChat} />
 
@@ -82,7 +82,7 @@ const Dashboard = () => {
 
         </div>
 
-        <div className="w-full mr-[60px]  ">
+        <div className="w-full md:mr-[60px]  ">
 
           <ChatComponent id={chatId} />
    
