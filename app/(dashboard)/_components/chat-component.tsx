@@ -129,9 +129,8 @@ const ChatComponent = ({ id }: { id: string }) => {
                 <div className="w-full pt-12 px-4 z-50">
                     <div 
                         ref={chatContainerRef} 
-                        className="w-full flex flex-col gap-2 overflow-y-auto z-50 py-2" 
+                        className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2 pb-20 md:pb-2 h-[calc(100vh-7rem)] md:h-[calc(100vh-12rem)]"
                         id="chatcontainer" 
-                        style={{ height: "calc(100vh - 12rem)" }}
                     >
                         {messages.map((message) => {
                             const isCurrentUser = message.sender_id === user?.id;
@@ -165,7 +164,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                     </div>
                 </div>
             ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-600 cursor-pointer">
+                <div className="w-full flex items-center justify-center text-gray-600 cursor-pointer h-[calc(100vh-1rem)] md:h-[calc(100vh-12rem)]">
                     Click on user profile to start chat
                 </div>
             )}

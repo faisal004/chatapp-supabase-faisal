@@ -3,6 +3,7 @@ import { Tables } from "@/lib/database.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useOpenStore } from "@/store/new-chat";
 
 type Profile = Tables<"profiles">;
 
@@ -13,10 +14,12 @@ interface SidebarProps {
 
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const {  setOpen } = useOpenStore();
 
   const handleUserClick = (userId: string) => {
     setSelectedUserId(userId);
     startChat(userId);
+    setOpen(false)
   };
 
   return (

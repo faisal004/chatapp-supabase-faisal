@@ -7,6 +7,18 @@ import Navbar from "../_components/navbar";
 import ChatComponent from "../_components/chat-component";
 import UsersSidebar from "../_components/users-sidebar";
 import ChatSidebar from "../_components/chatSidebar";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button";
+import { useOpenStore } from "@/store/new-chat";
 
 
 type Profile = Tables<"profiles">;
@@ -14,7 +26,7 @@ const Dashboard = () => {
   const user = useCurrentUser();
   const [users, setUsers] = useState<Profile[]>([]);
   const [chatId, setChatId] = useState("")
-
+  const { open, setOpen } = useOpenStore();
   const supabase = createClient();
 
   useEffect(() => {
@@ -71,27 +83,47 @@ const Dashboard = () => {
   };
 
   return (
-    <div className=" container mx-auto">
-      <Navbar />
-      <div className="flex w-full border ">
-        <div className=" md:w-1/3 w-full ">
+
+    <>
+      <Drawer open={open} onOpenChange={setOpen}>
+
+        <DrawerContent>
+          <DrawerTitle className="flex items-center justify-center text-3xl pt-2">
+            Chats
+          </DrawerTitle>
           <Suspense fallback={<div>Loading...</div>}>
             <UsersSidebar users={users} startChat={startChat} />
 
           </Suspense>
+        </DrawerContent>
+      </Drawer>
 
+      <div className=" container mx-auto">
+        <Navbar />
+        <div className="flex w-full border ">
+          <div className=" md:w-1/3 w-full md:flex hidden ">
+            <Suspense fallback={<div>Loading...</div>}>
+              <UsersSidebar users={users} startChat={startChat} />
+
+            </Suspense>
+
+
+          </div>
+
+          <div className="w-full md:mr-[60px]   ">
+
+            <ChatComponent id={chatId} />
+
+          </div>
+          <ChatSidebar />
         </div>
 
-        <div className="w-full md:mr-[60px]  ">
 
-          <ChatComponent id={chatId} />
-   
-        </div>
-        <ChatSidebar/>
       </div>
 
+    </>
 
-    </div>
+
   );
 };
 
