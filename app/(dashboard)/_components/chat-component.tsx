@@ -142,11 +142,11 @@ const ChatComponent = ({ id }: { id: string }) => {
                                             <AvatarFallback>FB</AvatarFallback>
                                         </Avatar>}
                                         <Card
-                                            className={`p-2 rounded-lg min-w-32 max-w-xs break-words ${
+                                            className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${
                                                 isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
                                             }`}
                                         >
-                                            <div className="flex flex-col">
+                                            <div className="flex flex-col pl-1">
                                                 <div className="text-xs font-medium text-emerald-700 mb-1">
                                                     {isCurrentUser ? "You" : (<span>{chatPartner?.full_name}</span>)}
                                                 </div>
