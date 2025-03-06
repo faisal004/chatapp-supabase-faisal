@@ -88,12 +88,11 @@ const ChatComponent = ({ id }: { id: string }) => {
         }
     };
 
-    console.log(chatPartner)
     return (
         <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative">
-            <div className="absolute inset-0 bg-gray-200/40 z-0"></div>
+<div className="bg-green-200/10 absolute inset-0 z-10 "></div>
 
-            {id && <div className="bg-white flex items-center justify-between shadow-xs border-b border-b-gray-400 z-50 absolute top-0 w-full h-12 pl-2 pr-4">
+            {id && chatPartner  && <div className="bg-white flex items-center justify-between shadow-xs border-b border-b-gray-400 z-50 absolute top-0 w-full h-12 pl-2 pr-4">
                 <div className="flex items-center gap-2">
                     <Avatar>
                         <AvatarImage src={chatPartner?.avatar_url as string} />
@@ -105,22 +104,29 @@ const ChatComponent = ({ id }: { id: string }) => {
                 </div>
             </div>}
             {id ? (
-                <div className="w-full pt-12">
-
-                    <div className="w-full">
-                        {messages.map((message) => (
-                            <div key={message.id}>{message.content}</div>
-                        ))}
-                    </div>
+            <div  className="w-full pt-14 px-4 z-50 ">
+                <div className="w-full flex flex-col gap-2 overflow-y-auto z-50" id="chatcontainer"  style={{ height: "calc(100vh - 12rem)" }}>
+                    {messages.map((message) => {
+                        const isCurrentUser = message.sender_id === user?.id;
+                        return (
+                            <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+                                <div
+                                    className={`p-2 rounded-lg max-w-xs break-words ${
+                                        isCurrentUser ? "bg-green-500 text-white self-end" : "bg-gray-200 text-black self-start"
+                                    }`}
+                                >
+                                    {message.content}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-            ) : (
-                <div
-                    className="w-full h-full flex items-center justify-center text-gray-600 cursor-pointer"
-
-                >
-                    Click on user profile to start chat
-                </div>
-            )}
+            </div>
+        ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-600 cursor-pointer">
+                Click on user profile to start chat
+            </div>
+        )}
 
             {id && (
                 <div className="bg-gray-50 p-3 border-t border-gray-200 z-10 absolute bottom-0 w-full">

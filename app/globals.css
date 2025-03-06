@@ -124,3 +124,7 @@
     @apply bg-background text-foreground;
   }
 }
+#chatcontainer::-webkit-scrollbar {
+  height: 0px; 
+  width: 0px; 
+}
