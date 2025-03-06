@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/util/supabase/client";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Tables } from "@/lib/database.types";
@@ -74,7 +74,10 @@ const Dashboard = () => {
       <Navbar />
       <div className="flex w-full border">
         <div className=" w-1/3 ">
-          <UsersSidebar users={users} startChat={startChat} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <UsersSidebar users={users} startChat={startChat} />
+
+          </Suspense>
 
         </div>
 
