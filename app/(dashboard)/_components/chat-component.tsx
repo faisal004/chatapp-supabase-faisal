@@ -145,7 +145,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                         {onlineUsers.includes(chatPartner.id as number) && (
                             <div className="flex items-center  justify-start w-full text-xs gap-1">
                                 Online
-                                <span className="size-3 bg-green-500 rounded-full"></span>
+                                <span className="size-2 bg-green-500 rounded-full"></span>
 
                             </div>
                         )}
