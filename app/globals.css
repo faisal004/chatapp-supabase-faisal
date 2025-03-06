@@ -128,3 +128,6 @@
   height: 0px; 
   width: 0px; 
 }
+html{
+  scroll-behavior: smooth;
+}
