@@ -9,7 +9,7 @@ const LogoutPage =  () => {
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-  return <div>You have logged out... redirecting in a sec.</div>;
+  return <div className="h-screen flex items-center justify-center">You have logged out... redirecting in a sec.</div>;
 };
 
 export default LogoutPage;
