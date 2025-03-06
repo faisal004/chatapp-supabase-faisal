@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Profile = Tables<"profiles">;
 
@@ -19,8 +20,9 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-58px)] bg-gray-50 p-2">
-      <ul>
+    <div className="h-[calc(100vh-58px)] bg-gray-50 p-2">
+      <ScrollArea className=" h-[calc(100vh-65px)] ">
+    
         {users.map((u) => (
           <Card
             key={u.id}
@@ -47,7 +49,10 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             </div>
           </Card>
         ))}
-      </ul>
+  
+</ScrollArea>
+
+    
     </div>
   );
 };
