@@ -24,7 +24,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   };
 
   return (
-    <div className="h-[calc(100vh-58px)] bg-gray-50 p-2">
+    <div className="h-[calc(100vh-58px)] bg-gray-100 ">
       <ScrollArea className=" h-[calc(100vh-65px)] ">
     
         {users.map((u) => (
@@ -33,8 +33,8 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             className={`p-3 overflow-hidden rounded-[5px] border-0 cursor-pointer 
               ${
                 selectedUserId === u.id
-                  ? "bg-gray-200 hover:bg-gray-300"
-                  : "bg-transparent hover:bg-gray-100"
+                  ? "bg-transparent hover:bg-gray-300"
+                  : "bg-white hover:bg-gray-200"
               } shadow-none`}
             onClick={() => handleUserClick(u.id)}
           >
