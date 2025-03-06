@@ -4,9 +4,10 @@ import { fetchMessages, sendMessage } from "@/lib/queries/chatQueries";
 import React, { useEffect, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import { Mic, Paperclip, Search, Send } from "lucide-react";
+import { Mic, Paperclip, Search, Send, Smile } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
+import EmojiPicker from "emoji-picker-react";
 
 type Message = Tables<"messages">;
 
@@ -14,6 +15,7 @@ type Message = Tables<"messages">;
 const ChatComponent = ({ id }: { id: string }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     const supabase = createClient();
     const user = useCurrentUser();
     const [chatPartner, setChatPartner] = useState<{ full_name?: string | null; avatar_url?: string | null } | null>(null);
@@ -146,10 +148,17 @@ const ChatComponent = ({ id }: { id: string }) => {
             )}
 
             {id && (
-                <div className="bg-gray-50 p-3 border-t border-gray-200 z-10 absolute bottom-0 w-full">
+                <div className="bg-gray-50 p-3 border-t border-gray-200 z-50 absolute bottom-0 w-full">
                     <div className="flex items-center bg-white rounded-full p-1">
                         <button className="p-2 text-gray-500 hover:text-gray-700">
                             <Paperclip size={20} />
+                        </button>
+
+                        <button
+                            className="p-2 text-gray-500 hover:text-gray-700"
+                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                        >
+                            <Smile size={20} />
                         </button>
 
                         <textarea
@@ -174,6 +183,21 @@ const ChatComponent = ({ id }: { id: string }) => {
                             </button>
                         )}
                     </div>
+
+                    {showEmojiPicker && (
+                        <div className="absolute bottom-16 left-4 z-[9999]">
+                            <EmojiPicker
+                                onEmojiClick={(emojiObject) => {
+                                    setNewMessage(prev => prev + emojiObject.emoji);
+                                    setShowEmojiPicker(false);
+                                }}
+                                searchDisabled={true}
+                                skinTonesDisabled={true}
+                                width={300}
+                                height={350}
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </div>
