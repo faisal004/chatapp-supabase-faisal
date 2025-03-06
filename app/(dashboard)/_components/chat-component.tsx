@@ -4,7 +4,8 @@ import { fetchMessages, sendMessage } from "@/lib/queries/chatQueries";
 import React, { useEffect, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import { Mic, Paperclip, Send } from "lucide-react";
+import {  Mic, Paperclip, Search, Send } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type Message = Tables<"messages">;
 
@@ -14,12 +15,13 @@ const ChatComponent = ({ id }: { id: string }) => {
     const [newMessage, setNewMessage] = useState("");
     const supabase = createClient();
     const user = useCurrentUser();
+    const [chatPartner, setChatPartner] = useState<{ full_name?: string | null; avatar_url?: string | null } | null>(null);
 
 
     useEffect(() => {
-        if (id) {
+        if (user && id) {
             loadMessages();
-
+            fetchChatPartner();
             const channel = supabase
                 .channel("messages")
                 .on(
@@ -47,6 +49,32 @@ const ChatComponent = ({ id }: { id: string }) => {
         if (error) console.error(error);
         else setMessages(messages);
     };
+    const fetchChatPartner = async () => {
+        try {
+            const { data: chatData, error: chatError } = await supabase
+                .from("chats")
+                .select("user1, user2")
+                .eq("id", id)
+                .single();
+
+            if (chatData && !chatError) {
+                // Determine which user is the chat partner
+                const partnerId = chatData.user1 === user.id ? chatData.user2 : chatData.user1;
+
+                if (partnerId) {
+                    const { data: partnerData } = await supabase
+                        .from("profiles")
+                        .select("full_name, avatar_url")
+                        .eq("id", partnerId)
+                        .single();
+
+                    setChatPartner(partnerData);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching chat partner:", error);
+        }
+    };
 
     const handleSendMessage = async () => {
         if (newMessage.trim() === "" || !user) return;
@@ -59,60 +87,74 @@ const ChatComponent = ({ id }: { id: string }) => {
             handleSendMessage();
         }
     };
+
+    console.log(chatPartner)
     return (
         <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative">
-        <div className="absolute inset-0 bg-gray-200/40"></div>
-    
-        {id ? (
-            <div className="w-full">
-                <div className="w-full">
-                    {messages.map((message) => (
-                        <div key={message.id}>{message.content}</div>
-                    ))}
+            <div className="absolute inset-0 bg-gray-200/40 z-0"></div>
+
+            {id && <div className="bg-white flex items-center justify-between shadow-xs border-b border-b-gray-400 z-50 absolute top-0 w-full h-12 pl-2 pr-4">
+                <div className="flex items-center gap-2">
+                    <Avatar>
+                        <AvatarImage src={chatPartner?.avatar_url as string} />
+                        <AvatarFallback>FB</AvatarFallback>
+                    </Avatar>         <span> {chatPartner?.full_name}</span>     
                 </div>
-            </div>
-        ) : (
-            <div
-                className="w-full h-full flex items-center justify-center text-gray-600 cursor-pointer"
-              
-            >
-                Click on user profile to start chat
-            </div>
-        )}
-    
-        {id && (
-            <div className="bg-gray-50 p-3 border-t border-gray-200 z-10 absolute bottom-0 w-full">
-                <div className="flex items-center bg-white rounded-full p-1">
-                    <button className="p-2 text-gray-500 hover:text-gray-700">
-                        <Paperclip size={20} />
-                    </button>
-    
-                    <textarea
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Type a message"
-                        className="flex-1 py-2 px-3 outline-none resize-none max-h-20"
-                        rows={1}
-                    />
-    
-                    {newMessage.trim() === "" ? (
+                <div>
+                    <Search className="size-6" />
+                </div>
+            </div>}
+            {id ? (
+                <div className="w-full pt-12">
+
+                    <div className="w-full">
+                        {messages.map((message) => (
+                            <div key={message.id}>{message.content}</div>
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                <div
+                    className="w-full h-full flex items-center justify-center text-gray-600 cursor-pointer"
+
+                >
+                    Click on user profile to start chat
+                </div>
+            )}
+
+            {id && (
+                <div className="bg-gray-50 p-3 border-t border-gray-200 z-10 absolute bottom-0 w-full">
+                    <div className="flex items-center bg-white rounded-full p-1">
                         <button className="p-2 text-gray-500 hover:text-gray-700">
-                            <Mic size={20} />
+                            <Paperclip size={20} />
                         </button>
-                    ) : (
-                        <button
-                            onClick={handleSendMessage}
-                            className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600"
-                        >
-                            <Send size={20} />
-                        </button>
-                    )}
+
+                        <textarea
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type a message"
+                            className="flex-1 py-2 px-3 outline-none resize-none max-h-20"
+                            rows={1}
+                        />
+
+                        {newMessage.trim() === "" ? (
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <Mic size={20} />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleSendMessage}
+                                className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600"
+                            >
+                                <Send size={20} />
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </div>
-        )}
-    </div>
-    
+            )}
+        </div>
+
     );
 };
 

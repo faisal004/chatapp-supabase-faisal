@@ -72,7 +72,7 @@ const Dashboard = () => {
   return (
     <div className=" container mx-auto">
       <Navbar />
-      <div className="flex w-full">
+      <div className="flex w-full border">
         <div className=" w-1/3 ">
           <UsersSidebar users={users} startChat={startChat} />
 
