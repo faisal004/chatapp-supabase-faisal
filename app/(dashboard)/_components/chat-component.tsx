@@ -11,14 +11,18 @@ import EmojiPicker from "emoji-picker-react";
 import { formatWhatsAppDate } from "@/util/fucntions/formatDate";
 
 type Message = Tables<"messages">;
+interface PresenceState {
+    [key: string]: { user_id: number }[];
+}
 
 const ChatComponent = ({ id }: { id: string }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [onlineUsers, setOnlineUser] = useState<number[]>([]);
     const supabase = createClient();
     const user = useCurrentUser();
-    const [chatPartner, setChatPartner] = useState<{ full_name?: string | null; avatar_url?: string | null } | null>(null);
+    const [chatPartner, setChatPartner] = useState<{ id?: string | number, full_name?: string | null; avatar_url?: string | null } | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +40,7 @@ const ChatComponent = ({ id }: { id: string }) => {
         if (user && id) {
             loadMessages();
             fetchChatPartner();
+
             const channel = supabase
                 .channel("messages")
                 .on(
@@ -49,8 +54,25 @@ const ChatComponent = ({ id }: { id: string }) => {
                     (payload) => {
                         setMessages((prev) => [...prev, payload.new as Message]);
                     }
-                )
-                .subscribe();
+                ).on('presence', { event: 'sync' }, () => {
+                    const newState: PresenceState = channel.presenceState();
+
+                    const userIds = []
+                    for (const id in newState) {
+                        userIds.push(newState[id][0].user_id)
+                    }
+                    setOnlineUser([...new Set(userIds)]);
+                })
+                .subscribe(async (status) => {
+                    if (status !== 'SUBSCRIBED') { return }
+
+                    const presenceTrackStatus = await channel.track({
+                        online_at: new Date().toISOString(),
+                        user_id: user.id
+
+                    })
+                    console.log(presenceTrackStatus, "fasil")
+                })
 
             return () => {
                 supabase.removeChannel(channel);
@@ -64,7 +86,7 @@ const ChatComponent = ({ id }: { id: string }) => {
         if (error) console.error(error);
         else setMessages(messages);
     };
-    
+
     const fetchChatPartner = async () => {
         try {
             const { data: chatData, error: chatError } = await supabase
@@ -80,7 +102,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                 if (partnerId) {
                     const { data: partnerData } = await supabase
                         .from("profiles")
-                        .select("full_name, avatar_url")
+                        .select("full_name, avatar_url,id")
                         .eq("id", partnerId)
                         .single();
 
@@ -97,7 +119,7 @@ const ChatComponent = ({ id }: { id: string }) => {
         const { error } = await sendMessage(id, user.id, newMessage);
         if (!error) setNewMessage("");
     };
-    
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -117,20 +139,29 @@ const ChatComponent = ({ id }: { id: string }) => {
                     <Avatar>
                         <AvatarImage src={chatPartner?.avatar_url as string} />
                         <AvatarFallback>FB</AvatarFallback>
-                    </Avatar>         
-                    <span>{chatPartner?.full_name}</span>
+                    </Avatar>
+                    <div className="flex flex-col items-center  ">
+                        <span>{chatPartner?.full_name}</span>
+                        {onlineUsers.includes(chatPartner.id as number) && (
+                            <div className="flex items-center  justify-start w-full text-xs gap-1">
+                                Online
+                                <span className="size-3 bg-green-500 rounded-full"></span>
+
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div>
                     <Search className="size-6" />
                 </div>
             </div>}
-            
+
             {id ? (
                 <div className="w-full pt-12 px-4 z-50">
-                    <div 
-                        ref={chatContainerRef} 
+                    <div
+                        ref={chatContainerRef}
                         className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2 pb-20 md:pb-2 h-[calc(100vh-7rem)] md:h-[calc(100vh-12rem)]"
-                        id="chatcontainer" 
+                        id="chatcontainer"
                     >
                         {messages.map((message) => {
                             const isCurrentUser = message.sender_id === user?.id;
@@ -142,9 +173,8 @@ const ChatComponent = ({ id }: { id: string }) => {
                                             <AvatarFallback>FB</AvatarFallback>
                                         </Avatar>}
                                         <Card
-                                            className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${
-                                                isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
-                                            }`}
+                                            className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
+                                                }`}
                                         >
                                             <div className="flex flex-col pl-1">
                                                 <div className="text-xs font-medium text-emerald-700 mb-1">
