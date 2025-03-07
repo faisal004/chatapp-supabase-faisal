@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { signout } from "@/lib/auth-actions";
+// import { signout } from "@/lib/auth-actions";
 import { useOpenStore } from "@/store/new-chat";
 import { HelpCircleIcon, MessageCircle, MessagesSquare } from "lucide-react";
+import Profile from "./profile";
 
 const Navbar = () => {
       const { setOpen } = useOpenStore();
@@ -14,7 +15,8 @@ const Navbar = () => {
                 </div>
                 <div className="font-semibold text-xl"> chats </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ">
+            <Profile/>
             <Button
                 variant={"outline"}
               
@@ -22,6 +24,7 @@ const Navbar = () => {
             >
             <HelpCircleIcon/>    <span>Help </span>
             </Button>
+            
             <Button
                 variant={"outline"}
                 onClick={()=>{
@@ -31,14 +34,15 @@ const Navbar = () => {
             >
             <MessageCircle/>    <span>New Chat </span>
             </Button>
-            <Button
+            {/* <Button
                 variant={"outline"}
                 onClick={() => {
                     signout();
                 }}
             >
                 Log out
-            </Button>
+            </Button> */}
+         
             </div>
             
         </nav>
