@@ -9,15 +9,10 @@ import UsersSidebar from "../_components/users-sidebar";
 import ChatSidebar from "../_components/chatSidebar";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
+
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button";
 import { useOpenStore } from "@/store/new-chat";
 
 
