@@ -9,17 +9,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EmojiPicker from "emoji-picker-react";
 import { formatWhatsAppDate } from "@/util/fucntions/formatDate";
+import { useOnlineUsersStore } from "@/store/user-online-store";
 
 type Message = Tables<"messages">;
-interface PresenceState {
-    [key: string]: { user_id: number }[];
-}
 
 const ChatComponent = ({ id }: { id: string }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const [onlineUsers, setOnlineUser] = useState<number[]>([]);
+    const { onlineUsers } = useOnlineUsersStore()
     const supabase = createClient();
     const user = useCurrentUser();
     const [chatPartner, setChatPartner] = useState<{ id?: string | number, full_name?: string | null; avatar_url?: string | null } | null>(null);
@@ -42,7 +40,7 @@ const ChatComponent = ({ id }: { id: string }) => {
             fetchChatPartner();
 
             const channel = supabase
-                .channel("messages")
+                .channel(`messages-${id}`)
                 .on(
                     "postgres_changes",
                     {
@@ -54,25 +52,8 @@ const ChatComponent = ({ id }: { id: string }) => {
                     (payload) => {
                         setMessages((prev) => [...prev, payload.new as Message]);
                     }
-                ).on('presence', { event: 'sync' }, () => {
-                    const newState: PresenceState = channel.presenceState();
-
-                    const userIds = []
-                    for (const id in newState) {
-                        userIds.push(newState[id][0].user_id)
-                    }
-                    setOnlineUser([...new Set(userIds)]);
-                })
-                .subscribe(async (status) => {
-                    if (status !== 'SUBSCRIBED') { return }
-
-                    const presenceTrackStatus = await channel.track({
-                        online_at: new Date().toISOString(),
-                        user_id: user.id
-
-                    })
-                    console.log(presenceTrackStatus, "fasil")
-                })
+                )
+                .subscribe();
 
             return () => {
                 supabase.removeChannel(channel);
@@ -146,7 +127,6 @@ const ChatComponent = ({ id }: { id: string }) => {
                             <div className="flex items-center  justify-start w-full text-xs gap-1">
                                 Online
                                 <span className="size-2 bg-green-500 rounded-full"></span>
-
                             </div>
                         )}
                     </div>
