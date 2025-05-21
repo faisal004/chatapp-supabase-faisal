@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { User } from '@supabase/supabase-js';
 
 interface NavItem {
     label: string;
@@ -18,8 +20,9 @@ const NAV_ITEMS: NavItem[] = [
     { label: 'Pricing', href: '#pricing' },
 ];
 
-export function Navbar() {
+export function Navbar({ user }: { user: User | null }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const router = useRouter();
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-[#041200] text-white backdrop-blur-sm">
@@ -51,11 +54,18 @@ export function Navbar() {
                         </nav>
 
                         <div className="flex items-center">
-                            <Button
+                            {user ? <Button
                                 className="bg-[#15803d] hover:bg-[#15803d]/90 text-white font-medium rounded-md"
+                                onClick={() => router.push("/dashboard")}
+                            >
+                                Dashboard
+                            </Button> : <Button
+                                className="bg-[#15803d] hover:bg-[#15803d]/90 text-white font-medium rounded-md"
+                                onClick={() => router.push("/login")}
                             >
                                 Login
-                            </Button>
+                            </Button>}
+
                             {/* Mobile menu button */}
                             <button
                                 className="ml-4 md:hidden text-white"

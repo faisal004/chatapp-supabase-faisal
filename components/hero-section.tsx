@@ -1,8 +1,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
 
-export function HeroSection() {
+export function HeroSection({ user }: { user: User | null }) {
+      const router = useRouter();
+  
   return (
     <div className="relative md:h-[calc(100vh-66px)] w-full flex flex-col items-center justify-center bg-[#041200] text-white pt-5">
     <div className="flex flex-col items-center justify-center p-3 ">
@@ -17,11 +21,18 @@ export function HeroSection() {
         Connect multiple numbers, create tasks & tickets, integrate with your systems, and automate your workflows on WhatsApp
       </p>
       <div className="flex md:flex-row flex-col items-center justify-center gap-4 mb-8 w-full ">
-        <Button className="bg-[#15803d] hover:bg-[#15803d]/90 text-white font-medium rounded-md h-12 px-5 text-lg w-full md:w-auto">
-          Sign Up for Free
-        </Button>
+        {user ? <Button
+            className="bg-[#15803d] hover:bg-[#15803d]/90 text-white font-medium rounded-md h-12 px-5 text-lg w-full md:w-auto"
+            onClick={() => router.push("/dashboard")}
+        >
+            Dashboard
+        </Button> : <Button className="bg-[#15803d] hover:bg-[#15803d]/90 text-white font-medium rounded-md h-12 px-5 text-lg w-full md:w-auto"
+        onClick={() => router.push("/login")}
+        >
+            Sign Up for Free
+        </Button>}
         <Button variant={"outline"} className=" text-black font-medium rounded-md h-12 px-5 text-lg w-full md:w-auto">
-          Book a Demo
+            Book a Demo
         </Button>
       </div>
       <p className="text-xs text-gray-100 mb-8">
