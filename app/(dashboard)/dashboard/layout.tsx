@@ -1,21 +1,22 @@
-import { Container } from '@/components/container'
-import Sidebar from '../_components/sidebar'
+
 import AppLayoutWithPresence from '@/providers/app-online-provider'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { AppSidebar } from '../_components/app-sidebar'
 
 
 const Browselayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <>
-            <div className="flex h-full ">
-                <Sidebar />
+        <SidebarProvider>
+      <AppSidebar />
+      <main className='w-full'>
+        <SidebarTrigger />
+        <AppLayoutWithPresence>
 
-                <Container>
-                    <AppLayoutWithPresence>
-                    {children}
-                    </AppLayoutWithPresence>
-                     </Container>
-            </div>
-        </>
+        {children}
+
+        </AppLayoutWithPresence>
+      </main>
+    </SidebarProvider>
     )
 }
 

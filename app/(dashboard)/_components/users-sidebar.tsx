@@ -25,7 +25,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   };
 
   return (
-    <div className="h-[calc(100vh-58px)] bg-gray-100 ">
+    <div className="h-[calc(100vh-58px)] bg-gray-100 w-full ">
       <ScrollArea className=" h-[calc(100vh-65px)] ">
 
         {users.map((u) => (
