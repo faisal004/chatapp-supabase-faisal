@@ -30,8 +30,14 @@ export function Clients() {
 
         <div className="flex flex-wrap gap-10 items-center justify-center">
           {logos.map((logo, index) => (
-            <div key={index} className="h-12 flex items-center justify-center">
-              <Image src={logo.url} alt={logo.name} width={130} height={130} />
+            <div key={index} className="h-10 md:h-12 flex items-center justify-center">
+              <Image 
+                src={logo.url} 
+                alt={logo.name} 
+                width={80} 
+                height={80} 
+                className="w-20 h-10 md:w-[130px] md:h-[52px] object-contain" 
+              />
             </div>
           ))}
         </div>
