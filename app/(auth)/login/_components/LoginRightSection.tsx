@@ -4,10 +4,10 @@ import React from "react";
 export function LoginRightSection() {
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-8">
-      <h2 className="text-2xl md:text-3xl font-bold text-green-900  text-center">
+      <h2 className="text-2xl md:text-4xl mb-2 font-bold text-green-900  text-center">
         Add Tasks and Reminders
       </h2>
-      <p className="text-gray-700 text-center mb-6 max-w-xl">
+      <p className="text-gray-700 text-center text-md mb-6 max-w-2xl">
         Create tasks and reminders on chats, messages, and tickets to track important actions and receive timely reminders.
       </p>
       <div className="w-full flex justify-center mb-6">
