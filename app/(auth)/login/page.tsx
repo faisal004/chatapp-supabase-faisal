@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { LoginForm } from "./_components/login-form";
 import { LoginRightSection } from "./_components/LoginRightSection";
 
@@ -11,7 +10,7 @@ const LoginPage = () => {
           <h1 className="text-2xl font-bold my-2 text-gray-900">Log in to Periskope</h1>
           <LoginForm />
           <p className="text-xs text-gray-400 mt-8 text-center w-60">
-            By signing up, you agree to Periskope's{' '}
+            By signing up, you agree to Periskope&apos;s{' '}
             <a href="#" className="underline">Terms of Service</a> and{' '}
             <a href="#" className="underline">Privacy Policy</a>.
           </p>
