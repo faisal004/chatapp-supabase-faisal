@@ -103,7 +103,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" >
-      <SidebarContent>
+      <SidebarContent className="hide-scrollbar overflow-y-auto">
         <SidebarHeader className="sticky top-0">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -127,11 +127,12 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
+          <SidebarGroupContent
+          >
+            <SidebarMenu className="space-y-2">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} >
-                  <SidebarMenuButton asChild className='[&>svg]:size-5' >
+                  <SidebarMenuButton asChild tooltip={item.title} className='[&>svg]:size-5 text-gray-500 hover:text-gray-700' >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -143,7 +144,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="pl-[7px]">
         <SidebarMenuItem className="list-none">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
