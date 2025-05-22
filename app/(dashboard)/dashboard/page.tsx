@@ -9,11 +9,12 @@ import UsersSidebar from "../_components/users-sidebar";
 import {
   Drawer,
   DrawerContent,
-
   DrawerTitle,
-} from "@/components/ui/drawer"
+} from "@/components/ui/drawer";
 import { useOpenStore } from "@/store/new-chat";
-
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Smile, Zap, MessageCircle, Star } from "lucide-react";
+import ChatSidebar from "../_components/chatSidebar";
 
 type Profile = Tables<"profiles">;
 const Dashboard = () => {
@@ -104,9 +105,12 @@ const Dashboard = () => {
 
           </div>
 
-          <div className="md:w-[70%] w-full overflow-y ">
+          <div className="md:w-[70%] w-full flex pr-[60px] ">
 
             <ChatComponent id={chatId} />
+
+            <ChatSidebar />
+
 
           </div>
         </div>

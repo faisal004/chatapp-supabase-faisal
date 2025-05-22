@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useChatSidebar } from "@/store/use-chatsidebar";
 
 interface NavItemProps {
-  icon: LucideIcon;
+  icon: any;
   label: string;
   href: string;
   isActive: boolean;
@@ -27,7 +27,7 @@ export const NavItem = ({
       asChild
       variant="ghost"
       className={cn(
-        "w-full h-12",
+        "w-full h-10",
         collapsed ? "justify-center" : "justify-start",
         isActive && "bg-accent",
       )}
@@ -35,7 +35,7 @@ export const NavItem = ({
       <Link href={href}>
         <div className="flex items-center gap-x-4">
           <Icon className={cn(
-            "h-4 w-4",
+            "size-5",
             collapsed ? "mr-0" : "mr-2",
             isActive && "fill-emerald-500",
           )} />
