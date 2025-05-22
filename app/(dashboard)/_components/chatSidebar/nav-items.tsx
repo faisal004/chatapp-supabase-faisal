@@ -5,9 +5,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useChatSidebar } from "@/store/use-chatsidebar";
+import { LucideIcon } from "lucide-react";
 
 interface NavItemProps {
-  icon: any;
+  icon: LucideIcon | any;
   label: string;
   href: string;
   isActive: boolean;

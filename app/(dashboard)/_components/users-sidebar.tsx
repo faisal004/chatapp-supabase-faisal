@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
-import { CheckCheck, Plus } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 import { useOnlineUsersStore } from "@/store/user-online-store";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
