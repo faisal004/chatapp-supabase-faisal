@@ -9,7 +9,6 @@ const Browselayout = ({ children }: { children: React.ReactNode }) => {
         <SidebarProvider>
       <AppSidebar />
       <main className='w-full'>
-        <SidebarTrigger />
         <AppLayoutWithPresence>
 
         {children}
