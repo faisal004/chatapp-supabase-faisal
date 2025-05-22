@@ -4,8 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
-import { CheckCheck } from "lucide-react";
+import { CheckCheck, Plus } from "lucide-react";
 import { useOnlineUsersStore } from "@/store/user-online-store";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 type Profile = Tables<"profiles">;
 
@@ -25,9 +26,11 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   };
 
   return (
-    <div className="h-[calc(100vh-58px)]  w-full ">
+    <div className="h-[calc(100vh-58px)]  w-full relative ">
+      <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3">
+          <IoChatbubbleEllipsesOutline className="size-6" />
+      </div>
       <ScrollArea className=" h-[calc(100vh-65px)] ">
-
         {users.map((u) => (
           <Card
             key={u.id}
