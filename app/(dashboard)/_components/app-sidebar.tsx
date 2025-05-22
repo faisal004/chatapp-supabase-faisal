@@ -23,22 +23,24 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled } from "react-icons/tb";
+import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled, TbStarsFilled } from "react-icons/tb";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const items = [
   {
     title: "Home",
     url: "#",
     icon: AiFillHome
-    
+
   },
   {
     title: "Chat",
     url: "#",
-    icon: IoChatbubbleEllipsesSharp 
-    
+    icon: IoChatbubbleEllipsesSharp
+
   },
   {
     title: "Ticket",
@@ -73,12 +75,12 @@ const items = [
   {
     title: "Media",
     url: "#",
-    icon: MdPermMedia ,
+    icon: MdPermMedia,
   },
   {
     title: "Logs",
     url: "#",
-    icon: MdChecklist ,
+    icon: MdChecklist,
   },
   {
     title: "Settings",
@@ -89,6 +91,14 @@ const items = [
 
 export function AppSidebar() {
   const { toggleSidebar, open } = useSidebar()
+  const user = useCurrentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const { name, email, avatar_url } = user.user_metadata;
+
   return (
     <Sidebar collapsible="icon" >
       <SidebarContent>
@@ -121,7 +131,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title} >
                   <SidebarMenuButton asChild className='[&>svg]:size-5' >
                     <a href={item.url}>
-                      <item.icon  />
+                      <item.icon />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
@@ -132,6 +142,21 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenuButton asChild className='[&>svg]:size-6'>
+          <div className="cursor-pointer" >
+            <Avatar className="size-6">
+              <AvatarImage src={avatar_url} />
+              <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+            </Avatar>
+            <span>What's New </span>
+          </div>
+        </SidebarMenuButton>
+        <SidebarMenuButton asChild className='[&>svg]:size-6'>
+          <div className="cursor-pointer" >
+            <TbStarsFilled />
+            <span>What's New </span>
+          </div>
+        </SidebarMenuButton>
         <SidebarMenuButton asChild tooltip={open ? 'Collapse' : 'Expand'} className='[&>svg]:size-6'>
           <div className="cursor-pointer" onClick={() => {
             toggleSidebar()
