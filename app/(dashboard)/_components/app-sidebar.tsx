@@ -5,7 +5,7 @@ import { IoChatbubbleEllipsesSharp, IoSettingsSharp, IoTicketSharp } from "react
 import { AiFillHome } from "react-icons/ai";
 import { RiContactsBookFill } from "react-icons/ri";
 import { SiGithubactions } from "react-icons/si";
-import { FaList } from "react-icons/fa";
+import { FaList, FaRegBuilding } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 
@@ -125,14 +125,56 @@ export function AppSidebar() {
                     <ChevronsUpDown className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[12rem]">
-                  <DropdownMenuItem>
-                    <span>Acme Inc</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <span>Acme Corp.</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
+                <DropdownMenuContent className="w-[12rem] ml-2">
+  {/* User section */}
+  <DropdownMenuLabel className="flex items-center gap-2 pb-2">
+    <Avatar className="size-6 rounded-md">
+      <AvatarImage src={avatar_url} />
+      <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+    </Avatar>
+    <span className="font-bold">{name}</span>
+  </DropdownMenuLabel>
+  <DropdownMenuItem>Organization settings</DropdownMenuItem>
+  <DropdownMenuItem>Invite team</DropdownMenuItem>
+  <DropdownMenuItem>Help & Support</DropdownMenuItem>
+
+  <DropdownMenuSeparator />
+
+  {/* Workspaces section */}
+  <DropdownMenuLabel className="flex items-center gap-2">
+    <span className="text-lg rotate-180"><FaRegBuilding /></span>
+    Workspaces
+  </DropdownMenuLabel>
+  <DropdownMenuItem className="flex items-center gap-2 font-bold">
+    <span>
+      <Avatar className="size-5">
+        <AvatarImage src={avatar_url} />
+        <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+      </Avatar>
+    </span>
+    {name}
+  </DropdownMenuItem>
+  <DropdownMenuItem className="italic text-muted-foreground">
+    <span className="mr-2 text-lg">+</span>
+    Create new
+  </DropdownMenuItem>
+
+  <DropdownMenuSeparator />
+
+  {/* Current user and logout */}
+  <DropdownMenuLabel className="flex items-center gap-2 pb-2">
+    <Avatar className="size-5">
+      <AvatarImage src={avatar_url} />
+      <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+    </Avatar>
+    <span className="truncate">{email}</span>
+  </DropdownMenuLabel>
+  <DropdownMenuItem
+    onClick={() => signout()}
+  >
+    Logout
+  </DropdownMenuItem>
+</DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -174,7 +216,7 @@ export function AppSidebar() {
                 </div>
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="top" className="w-[14rem]">
+            <DropdownMenuContent align="end" side="top" className="w-[14rem] ml-2">
               <DropdownMenuLabel className="flex items-center gap-3 pb-2">
                 <Avatar className="size-6">
                   <AvatarImage src={avatar_url} />
