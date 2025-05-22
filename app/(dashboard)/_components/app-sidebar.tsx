@@ -1,5 +1,5 @@
 "use client"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, ChevronsUpDown } from "lucide-react"
 import { MdChecklist,  MdPermMedia } from "react-icons/md";
 import { IoChatbubbleEllipsesSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import { AiFillHome } from "react-icons/ai";
@@ -107,17 +107,25 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" >
       <SidebarContent className="hide-scrollbar overflow-y-auto">
-        <SidebarHeader className="sticky top-0">
+        <SidebarHeader className="sticky top-0 z-50">
           <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
+            <SidebarMenuItem className="">
+              <DropdownMenu >
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton>
-                    Select Workspace
-                    <ChevronDown className="ml-auto" />
+                  <SidebarMenuButton className="h-10 z-20">
+                  <Avatar className="size-6 rounded-md">
+                    <AvatarImage src={avatar_url} />
+                    <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col truncate">
+                  <div className="text-sm font-medium">{name}</div>
+                  <div className="text-xs text-gray-500">{email}</div>
+                  </div>
+               
+                    <ChevronsUpDown className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+                <DropdownMenuContent className="w-[12rem]">
                   <DropdownMenuItem>
                     <span>Acme Inc</span>
                   </DropdownMenuItem>
@@ -166,7 +174,7 @@ export function AppSidebar() {
                 </div>
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="top">
+            <DropdownMenuContent align="end" side="top" className="w-[12rem]">
               <DropdownMenuLabel>
                 <div className="text-sm font-medium">{name}</div>
                 <div className="text-xs text-gray-500">{email}</div>
