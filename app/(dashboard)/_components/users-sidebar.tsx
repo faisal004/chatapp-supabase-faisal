@@ -27,7 +27,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
 
   return (
     <div className="h-[calc(100vh-58px)]  w-full relative ">
-      <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3">
+      <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
           <IoChatbubbleEllipsesOutline className="size-6" />
       </div>
       <ScrollArea className=" h-[calc(100vh-65px)] ">
