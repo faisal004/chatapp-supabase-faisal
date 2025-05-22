@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { HelpCircleIcon, MessageCircle, } from "lucide-react";
+import { ChevronsUpDown, HelpCircleIcon, MessageCircle, MonitorDown, } from "lucide-react";
 import { FaBolt } from "react-icons/fa";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { LuRefreshCcwDot } from "react-icons/lu";
@@ -10,6 +10,9 @@ import {
 
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { HiMiniBellSlash } from "react-icons/hi2";
+import { MdFormatListBulleted } from "react-icons/md";
+
 
 const Navbar = () => {
 
@@ -101,30 +104,32 @@ const Navbar = () => {
                 <Button
                     variant={"outline"}
 
-                    className="hidden md:flex"
+                    className="hidden md:flex items-center gap-3 "
                 >
-                    <HelpCircleIcon />    <span>Phone </span>
+                    <div className="relative pl-1 animate-pulse">
+                        <div className="absolute top-0 right-0 inline-flex items-center justify-center  text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full size-3 ring-2 ring-offset-2" ></div>
+                    </div>   <span> 0/1  phones </span> <ChevronsUpDown />
                 </Button>
                 <Button
                     variant={"outline"}
 
                     className="hidden md:flex"
                 >
-                    <HelpCircleIcon />    <span>Desl </span>
+                  <MonitorDown />  
                 </Button>
                 <Button
                     variant={"outline"}
 
                     className="hidden md:flex"
                 >
-                    <HelpCircleIcon />    <span>Notif</span>
+                  <HiMiniBellSlash /> 
                 </Button>
                 <Button
                     variant={"outline"}
 
                     className="hidden md:flex"
                 >
-                    <HelpCircleIcon />    <span>List </span>
+                 <MdFormatListBulleted />
                 </Button>
                 <Button
                     variant={"outline"}
