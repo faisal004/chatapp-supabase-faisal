@@ -1,12 +1,13 @@
 "use client"
-import { ChevronDown, ChevronsUpDown } from "lucide-react"
-import { MdChecklist,  MdPermMedia } from "react-icons/md";
+import {  ChevronsUpDown } from "lucide-react"
+import { MdChecklist,  MdLogout,  MdPermMedia } from "react-icons/md";
 import { IoChatbubbleEllipsesSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import { AiFillHome } from "react-icons/ai";
 import { RiContactsBookFill } from "react-icons/ri";
 import { SiGithubactions } from "react-icons/si";
 import { FaList } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
+import { HiOutlineStatusOnline } from "react-icons/hi";
 
 import { GrAnnounce } from "react-icons/gr";
 
@@ -16,7 +17,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -174,24 +174,35 @@ export function AppSidebar() {
                 </div>
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="top" className="w-[12rem]">
-              <DropdownMenuLabel>
-                <div className="text-sm font-medium">{name}</div>
-                <div className="text-xs text-gray-500">{email}</div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Button
-                  className="w-full"
-                  variant={"outline"}
-                  onClick={() => {
-                    signout();
-                  }}
-                >
-                  Logout
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+            <DropdownMenuContent align="end" side="top" className="w-[14rem]">
+  <DropdownMenuLabel className="flex items-center gap-3 pb-2">
+    <Avatar className="size-6">
+      <AvatarImage src={avatar_url} />
+      <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+    </Avatar>
+    <div>
+      <div className=" text-sm font-bold">{name}</div>
+      <div className="text-xs text-gray-500 truncate overflow-hidden">{email}</div>
+    </div>
+  </DropdownMenuLabel>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem>
+    <span className="mr-2 text-lg"><HiOutlineStatusOnline /></span>
+    Set yourself as online
+  </DropdownMenuItem>
+  <DropdownMenuItem asChild>
+    <Button
+      className="w-full justify-start"
+      variant={"ghost"}
+      onClick={() => {
+        signout();
+      }}
+    >
+      <span className="mr-2 text-lg"><MdLogout /></span>
+      Logout
+    </Button>
+  </DropdownMenuItem>
+</DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
         <SidebarMenuButton asChild className='[&>svg]:size-6'>
