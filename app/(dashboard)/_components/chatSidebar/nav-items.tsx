@@ -33,7 +33,7 @@ export const NavItem = ({
       )}
     >
       <Link href={href}>
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center text-gray-500 gap-x-4">
           <Icon className={cn(
             "size-5",
             collapsed ? "mr-0" : "mr-2",

@@ -5,6 +5,7 @@ import {
     Bell,
     FileText,
     Globe,
+    Icon,
     Settings,
     Shield,
     Star,
@@ -25,62 +26,65 @@ export const Navigation = () => {
     const pathname = usePathname();
 
     const routes = [
-      
         {
-            label: "Trending",
+            label: "Refresh", // FiRefreshCcw (refresh/rotate arrows)
             href: `#3`,
             icon: FiRefreshCcw,
         },
         {
-            label: "Users",
+            label: "Edit", // LuPencilLine (pencil/edit)
             href: `#4`,
             icon: LuPencilLine,
         },
         {
-            label: "Settings",
+            label: "List", // RiListIndefinite (list)
             href: `#5`,
             icon: RiListIndefinite,
         },
         {
-            label: "Notifications",
+            label: "Dashboard", // LuGrid2X2Check (grid/dashboard)
             href: `#6`,
             icon: LuGrid2X2Check,
         },
         {
-            label: "Documents",
+            label: "Users", // FaUsers (users/people)
             href: `#7`,
             icon: FaUsers,
         },
         {
-            label: "World",
+            label: "Email", // MdOutlineAlternateEmail (email/@)
             href: `#8`,
             icon: MdOutlineAlternateEmail,
         },
         {
-            label: "Favorites",
+            label: "Folder", // IoIosFolderOpen (folder)
             href: `#9`,
             icon: IoIosFolderOpen,
         },
-        
+        {
+            label: "New",
+            href: "#10",
+            icon: HiOutlineMenuAlt1
+        }
     ];
 
 
     return (
         <div id="sidebar" className=" flex flex-col items-center justify-between overflow-y-auto overflow-x-hidden  h-full">
-   <ul className="space-y-1 px-2  pt-4 lg:pt-0">
-            {routes.map((route) => (
-                <NavItem
-                    key={route.href}
-                    label={route.label}
-                    icon={route.icon}
-                    href={route.href}
-                    isActive={pathname === route.href}
-                />
-            ))}
-           
-        </ul>
-      
+            <ul className="space-y-1 px-2  pt-4 lg:pt-0">
+                {routes.map((route) => (
+                    <NavItem
+                        key={route.href}
+                        label={route.label}
+                        icon={route.icon}
+                        href={route.href}
+                        isActive={pathname === route.href}
+                    />
+                ))}
+
+            </ul>
+
         </div>
-     
+
     );
 };

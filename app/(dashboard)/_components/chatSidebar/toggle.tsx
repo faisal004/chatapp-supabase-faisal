@@ -14,8 +14,8 @@ const Toggle = () => {
     <>
       {collapsed && (
         <div className="w-full hidden lg:flex items-center bottom-0 justify-center pt-4 mb-4 ">
-            <Button onClick={onExpand} variant="ghost" className="h-auto p-2">
-           <TbLayoutSidebarLeftCollapseFilled size={40}/>
+            <Button onClick={onExpand} variant="ghost" className="h-auto p-2 ">
+           <TbLayoutSidebarLeftCollapseFilled  />
             </Button>
         </div>
       )}
