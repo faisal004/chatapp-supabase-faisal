@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { useChatSidebar } from '@/store/use-chatsidebar'
-import {  Menu } from 'lucide-react'
 import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled } from 'react-icons/tb'
 
 const Toggle = () => {

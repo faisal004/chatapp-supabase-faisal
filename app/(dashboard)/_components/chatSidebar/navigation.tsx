@@ -1,16 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import {
-    Bell,
-    FileText,
-    Globe,
-    Icon,
-    Settings,
-    Shield,
-    Star,
-    Users,
-} from "lucide-react";
+
 import { NavItem } from "./nav-items";
 import { FiRefreshCcw } from "react-icons/fi";
 import { LuGrid2X2Check, LuPencilLine } from "react-icons/lu";

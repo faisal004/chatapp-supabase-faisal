@@ -12,8 +12,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useOpenStore } from "@/store/new-chat";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { Smile, Zap, MessageCircle, Star } from "lucide-react";
+
 import ChatSidebar from "../_components/chatSidebar";
 
 type Profile = Tables<"profiles">;
