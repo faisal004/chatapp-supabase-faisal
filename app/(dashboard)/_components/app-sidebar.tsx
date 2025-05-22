@@ -1,6 +1,6 @@
 "use client"
-import { Calendar, ChevronDown, Home, HomeIcon, Inbox, PanelLeftIcon, Search, Settings } from "lucide-react"
-import { MdChecklist, MdHome, MdPermMedia } from "react-icons/md";
+import { ChevronDown } from "lucide-react"
+import { MdChecklist,  MdPermMedia } from "react-icons/md";
 import { IoChatbubbleEllipsesSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import { AiFillHome } from "react-icons/ai";
 import { RiContactsBookFill } from "react-icons/ri";
@@ -91,9 +91,12 @@ const items = [
   },
 ]
 
+import React, { useState } from "react";
+
 export function AppSidebar() {
   const { toggleSidebar, open } = useSidebar()
   const user = useCurrentUser();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (!user) {
     return null;
@@ -129,18 +132,23 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent
           >
-            <SidebarMenu className="space-y-2">
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title} >
-                  <SidebarMenuButton asChild tooltip={item.title} className='[&>svg]:size-5 text-gray-500 hover:text-gray-700' >
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu className="space-y-2" >
+  {items.map((item, idx) => (
+    <SidebarMenuItem key={item.title}>
+      <SidebarMenuButton
+        asChild
+        tooltip={item.title}
+        className={`[&>svg]:size-5 font-bold ${activeIndex === idx ? "bg-gray-100 text-[#15803d] hover:text-[#15803d]" : "text-gray-500 hover:text-gray-700"} `}
+        onClick={() => setActiveIndex(idx)}
+      >
+        <a href={item.url}>
+          <item.icon />
+          <span>{item.title}</span>
+        </a>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  ))}
+</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
