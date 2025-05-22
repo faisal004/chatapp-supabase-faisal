@@ -25,9 +25,11 @@ import {
 } from "@/components/ui/sidebar"
 import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled, TbStarsFilled } from "react-icons/tb";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { signout } from "@/lib/auth-actions";
 
 const items = [
   {
@@ -142,15 +144,39 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenuButton asChild className='[&>svg]:size-6'>
-          <div className="cursor-pointer" >
-            <Avatar className="size-6">
-              <AvatarImage src={avatar_url} />
-              <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
-            </Avatar>
-            <span>What's New </span>
-          </div>
-        </SidebarMenuButton>
+        <SidebarMenuItem className="list-none">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton className="[&>svg]:size-6">
+                <div className="flex items-center gap-2">
+                  <Avatar className="size-6">
+                    <AvatarImage src={avatar_url} />
+                    <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+                  </Avatar>
+                  <div className="text-sm font-medium">{name}</div>
+                </div>
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" side="top">
+              <DropdownMenuLabel>
+                <div className="text-sm font-medium">{name}</div>
+                <div className="text-xs text-gray-500">{email}</div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Button
+                  className="w-full"
+                  variant={"outline"}
+                  onClick={() => {
+                    signout();
+                  }}
+                >
+                  Logout
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
         <SidebarMenuButton asChild className='[&>svg]:size-6'>
           <div className="cursor-pointer" >
             <TbStarsFilled />
