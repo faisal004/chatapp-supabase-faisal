@@ -1,6 +1,6 @@
 
 import AppLayoutWithPresence from '@/providers/app-online-provider'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '../_components/app-sidebar'
 
 

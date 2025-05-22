@@ -6,7 +6,6 @@ import { Tables } from "@/lib/database.types";
 import Navbar from "../_components/navbar";
 import ChatComponent from "../_components/chat-component";
 import UsersSidebar from "../_components/users-sidebar";
-import ChatSidebar from "../_components/chatSidebar";
 import {
   Drawer,
   DrawerContent,

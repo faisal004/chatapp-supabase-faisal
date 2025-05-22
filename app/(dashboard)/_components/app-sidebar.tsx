@@ -1,6 +1,6 @@
 "use client"
-import {  ChevronsUpDown } from "lucide-react"
-import { MdChecklist,  MdLogout,  MdPermMedia } from "react-icons/md";
+import { ChevronsUpDown } from "lucide-react"
+import { MdChecklist, MdLogout, MdPermMedia } from "react-icons/md";
 import { IoChatbubbleEllipsesSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import { AiFillHome } from "react-icons/ai";
 import { RiContactsBookFill } from "react-icons/ri";
@@ -113,15 +113,15 @@ export function AppSidebar() {
               <DropdownMenu >
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="h-10 z-20">
-                  <Avatar className="size-6 rounded-md">
-                    <AvatarImage src={avatar_url} />
-                    <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col truncate">
-                  <div className="text-sm font-medium">{name}</div>
-                  <div className="text-xs text-gray-500">{email}</div>
-                  </div>
-               
+                    <Avatar className="size-6 rounded-md">
+                      <AvatarImage src={avatar_url} />
+                      <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col truncate">
+                      <div className="text-sm font-medium">{name}</div>
+                      <div className="text-xs text-gray-500">{email}</div>
+                    </div>
+
                     <ChevronsUpDown className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
@@ -141,22 +141,22 @@ export function AppSidebar() {
           <SidebarGroupContent
           >
             <SidebarMenu className="space-y-2" >
-  {items.map((item, idx) => (
-    <SidebarMenuItem key={item.title}>
-      <SidebarMenuButton
-        asChild
-        tooltip={item.title}
-        className={`[&>svg]:size-5 font-bold ${activeIndex === idx ? "bg-gray-100 text-[#15803d] hover:text-[#15803d]" : "text-gray-500 hover:text-gray-700"} `}
-        onClick={() => setActiveIndex(idx)}
-      >
-        <a href={item.url}>
-          <item.icon />
-          <span>{item.title}</span>
-        </a>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
-  ))}
-</SidebarMenu>
+              {items.map((item, idx) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={item.title}
+                    className={`[&>svg]:size-5 font-bold ${activeIndex === idx ? "bg-gray-100 text-[#15803d] hover:text-[#15803d]" : "text-gray-500 hover:text-gray-700"} `}
+                    onClick={() => setActiveIndex(idx)}
+                  >
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -175,40 +175,40 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" side="top" className="w-[14rem]">
-  <DropdownMenuLabel className="flex items-center gap-3 pb-2">
-    <Avatar className="size-6">
-      <AvatarImage src={avatar_url} />
-      <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
-    </Avatar>
-    <div>
-      <div className=" text-sm font-bold">{name}</div>
-      <div className="text-xs text-gray-500 truncate overflow-hidden">{email}</div>
-    </div>
-  </DropdownMenuLabel>
-  <DropdownMenuSeparator />
-  <DropdownMenuItem>
-    <span className="mr-2 text-lg"><HiOutlineStatusOnline /></span>
-    Set yourself as online
-  </DropdownMenuItem>
-  <DropdownMenuItem asChild>
-    <Button
-      className="w-full justify-start"
-      variant={"ghost"}
-      onClick={() => {
-        signout();
-      }}
-    >
-      <span className="mr-2 text-lg"><MdLogout /></span>
-      Logout
-    </Button>
-  </DropdownMenuItem>
-</DropdownMenuContent>
+              <DropdownMenuLabel className="flex items-center gap-3 pb-2">
+                <Avatar className="size-6">
+                  <AvatarImage src={avatar_url} />
+                  <AvatarFallback>{name ? name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <div className=" text-sm font-bold">{name}</div>
+                  <div className="text-xs text-gray-500 truncate overflow-hidden">{email}</div>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <span className="mr-2 text-lg"><HiOutlineStatusOnline /></span>
+                Set yourself as online
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Button
+                  className="w-full justify-start"
+                  variant={"ghost"}
+                  onClick={() => {
+                    signout();
+                  }}
+                >
+                  <span className="mr-2 text-lg"><MdLogout /></span>
+                  Logout
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
         <SidebarMenuButton asChild className='[&>svg]:size-6'>
           <div className="cursor-pointer" >
             <TbStarsFilled />
-            <span>What's New </span>
+            <span>What&apos;s New </span>
           </div>
         </SidebarMenuButton>
         <SidebarMenuButton asChild tooltip={open ? 'Collapse' : 'Expand'} className='[&>svg]:size-6'>
