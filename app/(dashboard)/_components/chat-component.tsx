@@ -4,12 +4,25 @@ import { fetchMessages, sendMessage } from "@/lib/queries/chatQueries";
 import React, { useEffect, useRef, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import { Mic, Paperclip, Search, Send, Smile } from "lucide-react";
+import { ChevronsUpDown, Paperclip, Search, Send, Smile } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EmojiPicker from "emoji-picker-react";
 import { formatWhatsAppDate } from "@/util/fucntions/formatDate";
 import { useOnlineUsersStore } from "@/store/user-online-store";
+import { Button } from "@/components/ui/button";
+import { FaFolder, FaMicrophone } from "react-icons/fa";
+import { RiTimer2Line } from "react-icons/ri";
+import { RxCountdownTimer } from "react-icons/rx";
+import { BsStars } from "react-icons/bs";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import Image from "next/image";
 
 type Message = Tables<"messages">;
 
@@ -140,7 +153,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                 <div className="w-full pt-12 px-4 z-50">
                     <div
                         ref={chatContainerRef}
-                        className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2 pb-20 md:pb-2 h-[calc(100vh-7rem)] md:h-[calc(100vh-12rem)]"
+                        className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2 pb-20 md:pb-2 h-[calc(100vh-7rem)] md:h-[calc(100vh-11rem)]"
                         id="chatcontainer"
                     >
                         {messages.map((message) => {
@@ -180,18 +193,9 @@ const ChatComponent = ({ id }: { id: string }) => {
             )}
 
             {id && (
-                <div className="bg-gray-50 p-3 border-t border-gray-200 z-50 absolute bottom-0 w-full">
-                    <div className="flex items-center bg-white rounded-full p-1">
-                        <button className="p-2 text-gray-500 hover:text-gray-700">
-                            <Paperclip size={20} />
-                        </button>
+                <div className="bg-white  border-t border-gray-200 z-50 absolute bottom-0 w-full">
+                    <div className="flex items-center bg-white  p-1">
 
-                        <button
-                            className="p-2 text-gray-500 hover:text-gray-700"
-                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                        >
-                            <Smile size={20} />
-                        </button>
 
                         <textarea
                             value={newMessage}
@@ -202,22 +206,64 @@ const ChatComponent = ({ id }: { id: string }) => {
                             rows={1}
                         />
 
-                        {newMessage.trim() === "" ? (
+
+                        <Button
+                            onClick={handleSendMessage}
+                            className="p-2  text-white rounded-full rotate-45 "
+                            variant={"ghost"}
+                        >
+                            <Send className="text-green-500 size-6" fill="green" />
+                        </Button>
+
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
                             <button className="p-2 text-gray-500 hover:text-gray-700">
-                                <Mic size={20} />
+                                <Paperclip size={16} />
                             </button>
-                        ) : (
+
                             <button
-                                onClick={handleSendMessage}
-                                className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600"
+                                className="p-2 text-gray-500 hover:text-gray-700"
+                                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                             >
-                                <Send size={20} />
+                                <Smile size={16} />
                             </button>
-                        )}
+
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <RiTimer2Line />
+                            </button>
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <RxCountdownTimer />
+
+                            </button>
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <BsStars />
+
+                            </button>
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <FaFolder />
+
+                            </button>
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <FaMicrophone />
+                            </button>
+                        </div>
+                        <div>
+                            <Button
+                                variant={"outline"}
+
+                                className="hidden md:flex items-center gap-3 h-7 "
+                            >
+                           <Image src="/logo1.png" alt="periskope" width={16} height={16} className="rounded-full" />      <span> Periskope </span> <ChevronsUpDown />
+                            </Button>
+
+                        </div>
                     </div>
 
+
+
                     {showEmojiPicker && (
-                        <div className="absolute bottom-16 left-4 z-[9999]">
+                        <div className="absolute bottom-10 left-4 z-[9999]">
                             <EmojiPicker
                                 onEmojiClick={(emojiObject) => {
                                     setNewMessage(prev => prev + emojiObject.emoji);
