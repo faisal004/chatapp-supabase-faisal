@@ -28,6 +28,7 @@ interface SidebarProps {
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [modalUser, setModalUser] = useState<Profile | null>(null);
+  const [showAllTagsUser, setShowAllTagsUser] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const user = useCurrentUser();
   const [userTags, setUserTags] = useState<Record<string, string[]>>({});
@@ -87,19 +88,30 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               } shadow-none`}
             onClick={() => handleUserClick(u.id)}
           >
-            <div className="absolute top-2 right-5 flex  items-end gap-1">
-              {(userTags[u.id]?.length
-                ? userTags[u.id]
-                : ["DEMO"]
-              ).map((tag, idx) => (
-                <span
-                  key={tag + idx}
-                  className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          <div className="absolute top-2 right-5 flex items-end gap-1">
+  {(userTags[u.id]?.slice(0, 2).length
+    ? userTags[u.id]?.slice(0, 2)
+    : ["DEMO"]
+  ).map((tag, idx) => (
+    <span
+      key={tag + idx}
+      className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
+    >
+      {tag}
+    </span>
+  ))}
+  {userTags[u.id]?.length > 2 && (
+    <span
+      className="inline-flex items-center justify-center px-1 py-[1px] text-[10px] font-bold leading-none bg-gray-200 border-[1px] border-gray-400 text-gray-700 rounded-full mb-1 cursor-pointer"
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowAllTagsUser(u);
+      }}
+    >
+      +{userTags[u.id].length - 2} 
+    </span>
+  )}
+</div>
             <div className="flex gap-3">
               <div className="relative">
                 <Avatar >
@@ -155,6 +167,28 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
           </Button>
         </DialogContent>
       </Dialog>
+      <Dialog open={!!showAllTagsUser} onOpenChange={(open) => !open && setShowAllTagsUser(null)}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>All tags for {showAllTagsUser?.full_name}</DialogTitle>
+    </DialogHeader>
+    <div className="flex flex-wrap gap-2 mt-2">
+      {showAllTagsUser &&
+        (userTags[showAllTagsUser.id]?.length
+          ? userTags[showAllTagsUser.id].map((tag, idx) => (
+              <span
+                key={tag + idx}
+                className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]"
+              >
+                {tag}
+              </span>
+            ))
+          : <span className="text-xs text-gray-500">No tags</span>
+        )
+      }
+    </div>
+  </DialogContent>
+</Dialog>
 
     </div>
   );
