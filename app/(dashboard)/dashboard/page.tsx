@@ -95,7 +95,7 @@ const Dashboard = () => {
       <div className="w-full  ">
         <Navbar />
         <div className="flex w-full border h-[calc(100vh-48px)]">
-          <div className="  w-[30%] md:flex hidden bg-gray-100 ">
+          <div className="  w-[30%] md:flex hidden bg-white ">
             <Suspense fallback={<div>Loading...</div>}>
               <UsersSidebar users={users} startChat={startChat} />
 

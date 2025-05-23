@@ -34,13 +34,16 @@ console.log(users)
         {users.map((u) => (
           <Card
             key={u.id}
-            className={`p-3 overflow-hidden rounded-[5px] border-0 h-20  cursor-pointer 
+            className={`p-3 overflow-hidden rounded-[5px] border-0 h-20  cursor-pointer relative 
               ${selectedUserId === u.id
-                ? "bg-transparent hover:bg-gray-300"
+                ? "bg-gray-100 hover:bg-gray-300"
                 : "bg-white hover:bg-gray-200"
               } shadow-none`}
             onClick={() => handleUserClick(u.id)}
           >
+            <div className="absolute top-2 right-5 inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none  bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]">
+              DEMO
+            </div>
             <div className="flex gap-3">
               <div className="relative">
                 <Avatar >

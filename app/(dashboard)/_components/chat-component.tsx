@@ -171,7 +171,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                                         >
                                             <div className="flex flex-col pl-1">
                                                 <div className="text-xs font-medium text-emerald-700 mb-1">
-                                                    {isCurrentUser ? "You" : (<span>{chatPartner?.full_name}</span>)}
+                                                    {!isCurrentUser && (<span>{chatPartner?.full_name}</span>)}
                                                 </div>
                                                 {message.content}
                                                 <div className="text-right text-[10px] text-gray-500 mt-1">
