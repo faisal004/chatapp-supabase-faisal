@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
-import { CheckCheck } from "lucide-react";
+import { CheckCheck, Phone } from "lucide-react";
 import { useOnlineUsersStore } from "@/store/user-online-store";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
@@ -18,13 +18,13 @@ interface SidebarProps {
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const { setOpen } = useOpenStore();
-  const { onlineUsers } = useOnlineUsersStore()
+  // const { onlineUsers } = useOnlineUsersStore()
   const handleUserClick = (userId: string) => {
     setSelectedUserId(userId);
     startChat(userId);
     setOpen(false)
   };
-
+console.log(users)
   return (
     <div className="h-[calc(100vh-58px)]  w-full relative ">
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
@@ -34,7 +34,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
         {users.map((u) => (
           <Card
             key={u.id}
-            className={`p-3 overflow-hidden rounded-[5px] border-0 cursor-pointer 
+            className={`p-3 overflow-hidden rounded-[5px] border-0 h-20  cursor-pointer 
               ${selectedUserId === u.id
                 ? "bg-transparent hover:bg-gray-300"
                 : "bg-white hover:bg-gray-200"
@@ -47,24 +47,30 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                   <AvatarImage src={u.avatar_url as string} />
                   <AvatarFallback>{u.full_name?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                {onlineUsers.includes(u.id) ? (
-
-                  <span className="size-3 absolute bottom-0 right-0 bg-green-500 rounded-full"></span>
-                ) : (<span className="size-3 absolute bottom-0 right-0 bg-yellow-500 rounded-full"></span>
-                )}
+        
               </div>
 
-              <div>
+              <div className="space-y-1.5">
+                <div>
                 <div className="text-sm font-semibold">{u.full_name}</div>
                 <div className="flex items-center">
                   <div className="text-xs line-clamp-1">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Autem, fugit.
                   </div>
-                  <div>
-                    <CheckCheck className="size-4 text-green-800" />
-                  </div>
+               
                 </div>
+                </div>
+             <div className="flex items-center justify-between">
+             <div className="text-[10px] flex items-center font-extralight bg-gray-100 rounded-[5px] w-28   px-2 py-[1px] gap-1">
+                  <Phone className="size-2"/>
+                <span> +91 9999999999 </span> 
+                </div>
+                <div className="text-[10px] font-extralight">
+                  Date
+                </div>
+             </div>
+              
 
               </div>
             </div>
