@@ -121,6 +121,33 @@ const ChatComponent = ({ id }: { id: string }) => {
         }
     };
 
+    function groupMessagesByDate(messages: Message[]) {
+        const groups: { [date: string]: Message[] } = {};
+        messages.forEach((msg) => {
+            const dateObj = new Date(msg.created_at!);
+            const dateKey = dateObj.toISOString().slice(0, 10);
+            if (!groups[dateKey]) groups[dateKey] = [];
+            groups[dateKey].push(msg);
+        });
+        return groups;
+    }
+
+    function getDateLabel(dateKey: string) {
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        const date = new Date(dateKey);
+
+        const isToday = today.toISOString().slice(0, 10) === dateKey;
+        const isYesterday = yesterday.toISOString().slice(0, 10) === dateKey;
+        if (isToday) return "Today";
+        if (isYesterday) return "Yesterday";
+        return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    const groupedMessages = groupMessagesByDate(messages);
+    const sortedDateKeys = Object.keys(groupedMessages).sort();
+
     return (
         <div className="w-full bg-[url('/chatbg.jpg')] bg-no-repeat bg-cover h-full relative ">
             <div className="absolute inset-0 z-10" style={{
@@ -156,33 +183,41 @@ const ChatComponent = ({ id }: { id: string }) => {
                         className="w-full flex flex-col gap-2 overflow-y-auto z-50 pt-2 pb-20 md:pb-2 h-[calc(100vh-7rem)] md:h-[calc(100vh-11rem)]"
                         id="chatcontainer"
                     >
-                        {messages.map((message) => {
-                            const isCurrentUser = message.sender_id === user?.id;
-                            return (
-                                <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
-                                    <div className="flex gap-1">
-                                        {isCurrentUser ? "" : <Avatar className="size-6">
-                                            <AvatarImage src={chatPartner?.avatar_url as string} />
-                                            <AvatarFallback>FB</AvatarFallback>
-                                        </Avatar>}
-                                        <Card
-                                            className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"
-                                                }`}
-                                        >
-                                            <div className="flex flex-col pl-1">
-                                                <div className="text-xs font-medium text-emerald-700 mb-1">
-                                                    {!isCurrentUser && (<span>{chatPartner?.full_name}</span>)}
-                                                </div>
-                                                {message.content}
-                                                <div className="text-right text-[10px] text-gray-500 mt-1">
-                                                    {formatWhatsAppDate(message.created_at as string)}
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </div>
+                        {sortedDateKeys.map((dateKey) => (
+                            <React.Fragment key={dateKey}>
+                                <div className="flex justify-center my-2">
+                                    <span className="bg-gray-300 text-black font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
+                                        {getDateLabel(dateKey)}
+                                    </span>
                                 </div>
-                            );
-                        })}
+                                {groupedMessages[dateKey].map((message) => {
+                                    const isCurrentUser = message.sender_id === user?.id;
+                                    return (
+                                        <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+                                            <div className="flex gap-1">
+                                                {isCurrentUser ? "" : <Avatar className="size-6">
+                                                    <AvatarImage src={chatPartner?.avatar_url as string} />
+                                                    <AvatarFallback>FB</AvatarFallback>
+                                                </Avatar>}
+                                                <Card
+                                                    className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"}`}
+                                                >
+                                                    <div className="flex flex-col pl-1">
+                                                        <div className="text-xs font-medium text-emerald-700 mb-1">
+                                                            {!isCurrentUser && (<span>{chatPartner?.full_name}</span>)}
+                                                        </div>
+                                                        {message.content}
+                                                        <div className="text-right text-[10px] text-gray-500 mt-1">
+                                                            {formatWhatsAppDate(message.created_at as string)}
+                                                        </div>
+                                                    </div>
+                                                </Card>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </React.Fragment>
+                        ))}
                         <div ref={messagesEndRef} />
                     </div>
                 </div>
