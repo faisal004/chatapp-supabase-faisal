@@ -137,7 +137,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
         <IoChatbubbleEllipsesOutline className="size-6" />
       </div>
-      <div className="h-10 bg-gray-100 px-2 py-0 flex items-center justify-end gap-2 text-xs border-b border-gray-200">
+      <div className="h-10 bg-gray-100 border px-2 py-0 flex items-center justify-end gap-2 text-xs border-b border-gray-200">
         {searchOpen ? (
           <div className="flex items-center gap-1">
             <Input
