@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTag, getTags } from "@/lib/queries/tags";
+import { addTag, getTags, removeTag } from "@/lib/queries/tags";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 type Profile = Tables<"profiles">;
@@ -68,6 +68,19 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       setLoading(false);
     }
   };
+  const handleRemoveTag = async (chatUser: Profile, tag: string) => {
+    setLoading(true);
+    try {
+      await removeTag(user.id, chatUser.id, tag);
+      setShowAllTagsUser(null);
+      fetchTags();
+    } catch (error) {
+      console.error("Error removing tag:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-[calc(100vh-58px)]  w-full relative ">
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
@@ -89,12 +102,13 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             onClick={() => handleUserClick(u.id)}
           >
             <div className="absolute top-2 right-5 flex items-end gap-1">
-              {(userTags[u.id]?.slice(0, 2).length
-                ? userTags[u.id]?.slice(0, 2)
-                : ["DEMO"]
-              ).map((tag, idx) => (
+              {(userTags[u.id]?.length > 0 ? userTags[u.id] : []).slice(0, 2).map((tag, idx) => (
                 <span
                   key={tag + idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowAllTagsUser(u);
+                  }}
                   className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] h-5 font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
                 >
                   {tag}
@@ -176,12 +190,21 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             {showAllTagsUser &&
               (userTags[showAllTagsUser.id]?.length
                 ? userTags[showAllTagsUser.id].map((tag, idx) => (
-                  <span
+                  <div
                     key={tag + idx}
-                    className="inline-flex items-center justify-center px-2 py-[1px] h-5 text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]"
+                    className="flex items-center justify-between  gap-2 w-20 px-2 py-[1px] h-8 text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] relative"
                   >
-                    {tag}
-                  </span>
+                    <span className="">{tag}</span>
+                    <button
+                      type="button"
+                      className=" text-red-500 hover:text-red-700 text-xs font-bold  bg-white rounded-full px-1 border border-red-200"
+                      title="Remove tag"
+                      onClick={() => handleRemoveTag(showAllTagsUser, tag)}
+                      disabled={loading}
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))
                 : <span className="text-xs text-gray-500">No tags</span>
               )
