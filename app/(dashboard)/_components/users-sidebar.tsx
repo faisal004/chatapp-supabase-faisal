@@ -75,12 +75,22 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [label, setLabel] = useState("")
   const { setOpen } = useOpenStore();
   const [tagFilter, setTagFilter] = useState<string>("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const allTags = Array.from(new Set(Object.values(userTags).flat()));
 
-  const filteredUsers = tagFilter && tagFilter !== "all"
+  // Filter by tag
+  let filteredUsers = tagFilter && tagFilter !== "all"
     ? users.filter(u => userTags[u.id]?.includes(tagFilter))
     : users;
+
+  // Further filter by search
+  if (searchValue.trim() !== "") {
+    filteredUsers = filteredUsers.filter(u =>
+      u.full_name?.toLowerCase().includes(searchValue.trim().toLowerCase())
+    );
+  }
 
   const handleUserClick = (userId: string) => {
     setSelectedUserId(userId);
@@ -135,16 +145,38 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
         <IoChatbubbleEllipsesOutline className="size-6" />
       </div>
       <div className="h-10 bg-gray-100 px-2 py-0 flex items-center justify-end gap-2 text-xs border-b border-gray-200">
-      <Button className="h-8 focus:ring-0 text-xs text-green-800 focus-visible:ring-[0px]" size={"sm"} variant={"outline"} >
-      <HiMagnifyingGlass className="size-4" />
-
-              Search
+        {searchOpen ? (
+          <div className="flex items-center gap-1">
+            <Input
+              className="h-8 text-xs px-2 w-40  focus:ring-0  rounded-none bg-white text-green-800 focus-visible:ring-[0px]"
+              autoFocus
+              placeholder="Search user..."
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              onBlur={() => { if (searchValue === "") setSearchOpen(false); }}
+            />
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-8 px-2 text-xs"
+              onClick={() => { setSearchOpen(false); setSearchValue(""); }}
+            >
+              ✕
             </Button>
+          </div>
+        ) : (
+          <Button className="h-8 focus:ring-0 text-xs text-green-800 focus-visible:ring-[0px]" size={"sm"} variant={"outline"}
+            onClick={() => setSearchOpen(true)}
+          >
+            <HiMagnifyingGlass className="size-4" />
+            Search
+          </Button>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="h-8 focus:ring-0 text-xs text-green-800 focus-visible:ring-[0px]" size={"sm"} variant={"outline"} >
-                <IoFilter className="size-4" />
-                Filters
+              <IoFilter className="size-4" />
+              Filters
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
