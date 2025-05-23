@@ -95,14 +95,14 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               ).map((tag, idx) => (
                 <span
                   key={tag + idx}
-                  className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
+                  className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] h-5 font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
                 >
                   {tag}
                 </span>
               ))}
               {userTags[u.id]?.length > 2 && (
                 <span
-                  className="inline-flex items-center justify-center px-1 py-[1px] text-[10px] font-bold leading-none bg-gray-200 border-[1px] border-gray-400 text-gray-700 rounded-full mb-1 cursor-pointer"
+                  className="inline-flex items-center justify-center px-1 py-[1px] text-[10px] h-5 font-bold leading-none bg-gray-200 border-[1px] border-gray-400 text-gray-700 rounded-full mb-1 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowAllTagsUser(u);
@@ -178,7 +178,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                 ? userTags[showAllTagsUser.id].map((tag, idx) => (
                   <span
                     key={tag + idx}
-                    className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]"
+                    className="inline-flex items-center justify-center px-2 py-[1px] h-5 text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]"
                   >
                     {tag}
                   </span>
