@@ -104,7 +104,7 @@ const Dashboard = () => {
 
           </div>
 
-          <div className="md:w-[70%] w-full flex pr-[60px] ">
+          <div className="md:w-[70%] w-full flex md:pr-[60px] ">
 
             <ChatComponent id={chatId} />
 

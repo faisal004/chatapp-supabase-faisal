@@ -186,7 +186,7 @@ const ChatComponent = ({ id }: { id: string }) => {
                         {sortedDateKeys.map((dateKey) => (
                             <React.Fragment key={dateKey}>
                                 <div className="flex justify-center my-2">
-                                    <span className="bg-gray-300 text-black font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
+                                    <span className="bg-gray-300 text-black font-semibold text-xs px-3 py-1 rounded-full ">
                                         {getDateLabel(dateKey)}
                                     </span>
                                 </div>
