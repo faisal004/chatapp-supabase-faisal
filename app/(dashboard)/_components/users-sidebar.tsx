@@ -4,8 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
-import { CheckCheck, Phone } from "lucide-react";
-import { useOnlineUsersStore } from "@/store/user-online-store";
+import {  Phone } from "lucide-react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 type Profile = Tables<"profiles">;

@@ -15,13 +15,6 @@ import { FaFolder, FaMicrophone } from "react-icons/fa";
 import { RiTimer2Line } from "react-icons/ri";
 import { RxCountdownTimer } from "react-icons/rx";
 import { BsStars } from "react-icons/bs";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import Image from "next/image";
 
 type Message = Tables<"messages">;
