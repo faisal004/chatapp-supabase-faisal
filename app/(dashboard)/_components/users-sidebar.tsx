@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenStore } from "@/store/new-chat";
 import { Phone } from "lucide-react";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { IoChatbubbleEllipsesOutline, IoFilter } from "react-icons/io5";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { addTag, getTags, removeTag } from "@/lib/queries/tags";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { HiMagnifyingGlass } from "react-icons/hi2";
 
 type Profile = Tables<"profiles">;
 
@@ -58,6 +74,14 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [userTags, setUserTags] = useState<Record<string, string[]>>({});
   const [label, setLabel] = useState("")
   const { setOpen } = useOpenStore();
+  const [tagFilter, setTagFilter] = useState<string>("");
+
+  const allTags = Array.from(new Set(Object.values(userTags).flat()));
+
+  const filteredUsers = tagFilter && tagFilter !== "all"
+    ? users.filter(u => userTags[u.id]?.includes(tagFilter))
+    : users;
+
   const handleUserClick = (userId: string) => {
     setSelectedUserId(userId);
     startChat(userId);
@@ -110,8 +134,34 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
         <IoChatbubbleEllipsesOutline className="size-6" />
       </div>
-      <ScrollArea className=" h-[calc(100vh-65px)] ">
-        {users.map((u) => (
+      <div className="h-10 bg-gray-100 px-2 py-0 flex items-center justify-end gap-2 text-xs border-b border-gray-200">
+      <Button className="h-8 focus:ring-0 text-xs text-green-800 focus-visible:ring-[0px]" size={"sm"} variant={"outline"} >
+      <HiMagnifyingGlass className="size-4" />
+
+              Search
+            </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="h-8 focus:ring-0 text-xs text-green-800 focus-visible:ring-[0px]" size={"sm"} variant={"outline"} >
+                <IoFilter className="size-4" />
+                Filters
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTagFilter("all")}>All</DropdownMenuItem>
+
+            {allTags.map(tag => (
+              <DropdownMenuItem key={tag} onClick={() => setTagFilter(tag)}>{tag}</DropdownMenuItem>
+
+            ))}
+
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+
+      </div>
+      <ScrollArea className=" h-[calc(100vh-93px)] ">
+        {filteredUsers.map((u) => (
           <Card
             key={u.id}
             onContextMenu={(e) => {
