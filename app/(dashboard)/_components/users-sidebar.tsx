@@ -25,6 +25,30 @@ interface SidebarProps {
   startChat: (receiverId: string) => void;
 }
 
+// Utility to generate a pseudo-random phone number based on user id
+function getRandomPhone(userId: string) {
+  // Simple hash for demo purposes
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Generate a 10-digit number
+  let num = Math.abs(hash % 9000000000) + 1000000000;
+  return `+91 ${num}`;
+}
+
+// Utility to generate a pseudo-random date in the last 30 days based on user id
+function getRandomDate(userId: string) {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const daysAgo = Math.abs(hash % 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  return date.toLocaleDateString();
+}
+
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [modalUser, setModalUser] = useState<Profile | null>(null);
@@ -149,10 +173,10 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] flex items-center font-extralight bg-gray-100 rounded-[5px] w-28   px-2 py-[1px] gap-1">
                     <Phone className="size-2" />
-                    <span> +91 9999999999 </span>
+                    <span> {getRandomPhone(u.id)} </span>
                   </div>
                   <div className="text-[10px] font-extralight">
-                    Date
+                    {getRandomDate(u.id)}
                   </div>
                 </div>
 
