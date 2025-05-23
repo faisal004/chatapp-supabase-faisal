@@ -81,7 +81,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               e.preventDefault();
               setModalUser(u);
             }}
-            className={`p-3 overflow-hidden rounded-[5px] border-0 h-20  cursor-pointer relative 
+            className={`p-3 overflow-hidden rounded-[5px] border-0 h-20 w-full  cursor-pointer relative 
               ${selectedUserId === u.id
                 ? "bg-gray-100 hover:bg-gray-300"
                 : "bg-white hover:bg-gray-200"
@@ -112,7 +112,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                 </span>
               )}
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 w-full">
               <div className="relative">
                 <Avatar >
                   <AvatarImage src={u.avatar_url as string} />
@@ -121,7 +121,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
 
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 w-full">
                 <div>
                   <div className="text-sm font-semibold">{u.full_name}</div>
                   <div className="flex items-center">
