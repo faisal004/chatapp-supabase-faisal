@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTag } from "@/lib/queries/tags";
+import { addTag, getTags } from "@/lib/queries/tags";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 type Profile = Tables<"profiles">;
@@ -30,20 +30,37 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [modalUser, setModalUser] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const user = useCurrentUser();
-  const [label,setLabel]=useState("")
-    const { setOpen } = useOpenStore();
+  const [userTags, setUserTags] = useState<Record<string, string[]>>({});
+  const [label, setLabel] = useState("")
+  const { setOpen } = useOpenStore();
   const handleUserClick = (userId: string) => {
     setSelectedUserId(userId);
     startChat(userId);
     setOpen(false)
   };
+  const fetchTags = async () => {
+    if (!user?.id || users.length === 0) return;
+    const tagsObj: Record<string, string[]> = {};
+    for (const u of users) {
+      const { data } = await getTags(u.id, user.id);
+      if (data && data.length > 0) {
+        tagsObj[u.id] = data.map(tagObj => tagObj.tag);
+      }
+    }
+    setUserTags(tagsObj);
+  };
+  useEffect(() => {
+
+    fetchTags();
+  }, [user?.id, users]);
   const handleAddTag = async (chatUser: Profile) => {
     if (label.trim() === "") return;
     setLoading(true);
     try {
       await addTag(user.id, chatUser.id, label);
       setModalUser(null);
-      setLabel(""); // Optionally clear input
+      setLabel(""); 
+      fetchTags()
     } catch (error) {
       console.error("Error adding tag:", error);
     } finally {
@@ -70,8 +87,18 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               } shadow-none`}
             onClick={() => handleUserClick(u.id)}
           >
-            <div className="absolute top-2 right-5 inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none  bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px]">
-              DEMO
+            <div className="absolute top-2 right-5 flex  items-end gap-1">
+              {(userTags[u.id]?.length
+                ? userTags[u.id]
+                : ["DEMO"]
+              ).map((tag, idx) => (
+                <span
+                  key={tag + idx}
+                  className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
             <div className="flex gap-3">
               <div className="relative">
@@ -112,22 +139,22 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       </ScrollArea>
 
       <Dialog open={!!modalUser} onOpenChange={(open) => !open && setModalUser(null)}>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Tag for {modalUser?.full_name}?</DialogTitle>
-      <DialogDescription>
-      You can add tag/label to {modalUser?.full_name}.
-      </DialogDescription>
-    </DialogHeader>
-    <Input
-    value={label}
-    onChange={(e) => setLabel(e.target.value)}
-    />
-   <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading}>
-      {loading ? "Saving..." : "Add"}
-    </Button>
-  </DialogContent>
-</Dialog>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tag for {modalUser?.full_name}?</DialogTitle>
+            <DialogDescription>
+              You can add tag/label to {modalUser?.full_name}.
+            </DialogDescription>
+          </DialogHeader>
+          <Input
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+          />
+          <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading}>
+            {loading ? "Saving..." : "Add"}
+          </Button>
+        </DialogContent>
+      </Dialog>
 
     </div>
   );

@@ -11,3 +11,12 @@ export const addTag = async (from: string, to: string, tag: string) => {
     return { data, error };
 };
 
+export const getTags = async (userId: string, currentUserId: string) => {
+    const { data, error } = await supabase
+        .from("user_tags")
+        .select("*")
+        .eq("to_user_id", userId)
+        .eq("from_user_id", currentUserId);
+
+    return { data, error };
+};
