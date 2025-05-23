@@ -42,7 +42,7 @@ function getRandomPhone(userId: string) {
     hash = userId.charCodeAt(i) + ((hash << 5) - hash);
   }
   // Generate a 10-digit number
-  let num = Math.abs(hash % 9000000000) + 1000000000;
+  const num = Math.abs(hash % 9000000000) + 1000000000;
   return `+91 ${num}`;
 }
 
