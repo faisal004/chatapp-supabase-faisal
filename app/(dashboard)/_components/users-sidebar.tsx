@@ -28,6 +28,7 @@ interface SidebarProps {
 const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [modalUser, setModalUser] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(false);
   const user = useCurrentUser();
   const [label,setLabel]=useState("")
     const { setOpen } = useOpenStore();
@@ -36,19 +37,19 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     startChat(userId);
     setOpen(false)
   };
-  const handleAddTag=async(chatUser:Profile)=>{
-    if (label.trim() === "") {
-      return;
-    }
-    console.log(chatUser.id,user.id)
-
+  const handleAddTag = async (chatUser: Profile) => {
+    if (label.trim() === "") return;
+    setLoading(true);
     try {
-      await addTag(  user.id,chatUser.id,label);
+      await addTag(user.id, chatUser.id, label);
       setModalUser(null);
+      setLabel(""); // Optionally clear input
     } catch (error) {
       console.error("Error adding tag:", error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
   return (
     <div className="h-[calc(100vh-58px)]  w-full relative ">
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
@@ -122,8 +123,8 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     value={label}
     onChange={(e) => setLabel(e.target.value)}
     />
-    <Button onClick={() => handleAddTag(modalUser as Profile)}>
-      Add
+   <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading}>
+      {loading ? "Saving..." : "Add"}
     </Button>
   </DialogContent>
 </Dialog>
