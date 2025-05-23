@@ -33,6 +33,6 @@ export function formatWhatsAppDate(dateString:string) {
     const day = date.getDate();
     const year = date.getFullYear().toString().slice(-2); // Get last 2 digits
     
-    return `${month}/${day}/${year}, ${timeString}`;
+    return `${timeString}`;
   }
   
