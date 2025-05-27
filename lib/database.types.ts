@@ -52,6 +52,7 @@ export type Database = {
           created_at: string | null
           id: string
           sender_id: string | null
+          reply_to_id: string | null // Added for reply feature
         }
         Insert: {
           chat_id?: string | null
@@ -59,6 +60,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           sender_id?: string | null
+          reply_to_id?: string | null // Added for reply feature
         }
         Update: {
           chat_id?: string | null
@@ -66,6 +68,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           sender_id?: string | null
+          reply_to_id?: string | null // Added for reply feature
         }
         Relationships: [
           {
@@ -80,6 +83,13 @@ export type Database = {
             columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_reply_to_id_fkey"
+            columns: ["reply_to_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["id"]
           },
         ]

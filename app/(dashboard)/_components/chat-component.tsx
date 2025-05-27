@@ -1,6 +1,6 @@
 "use client";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { fetchMessages, sendMessage } from "@/lib/queries/chatQueries";
+import { fetchMessages, replyMessage, sendMessage } from "@/lib/queries/chatQueries";
 import React, { useEffect, useRef, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
@@ -29,6 +29,7 @@ const ChatComponent = ({ id }: { id: string }) => {
     const [chatPartner, setChatPartner] = useState<{ id?: string | number, full_name?: string | null; avatar_url?: string | null } | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const [replyingTo, setReplyingTo] = useState<Message | null>(null);
 
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
@@ -103,6 +104,12 @@ const ChatComponent = ({ id }: { id: string }) => {
 
     const handleSendMessage = async () => {
         if (newMessage.trim() === "" || !user) return;
+        if (replyingTo) {
+            const { error } = await replyMessage(id, user.id, newMessage, replyingTo.id);
+            if (!error) setNewMessage("");
+            setReplyingTo(null);
+            return;
+        }
         const { error } = await sendMessage(id, user.id, newMessage);
         if (!error) setNewMessage("");
     };
@@ -114,6 +121,11 @@ const ChatComponent = ({ id }: { id: string }) => {
         }
     };
 
+    const handleReply = async (message: Message) => {
+        console.log(message)
+        setReplyingTo(message);
+
+    };
     function groupMessagesByDate(messages: Message[]) {
         const groups: { [date: string]: Message[] } = {};
         messages.forEach((msg) => {
@@ -185,17 +197,35 @@ const ChatComponent = ({ id }: { id: string }) => {
                                 </div>
                                 {groupedMessages[dateKey].map((message) => {
                                     const isCurrentUser = message.sender_id === user?.id;
+                                    // Find the replied-to message if reply_to_id exists
+                                    const repliedMessage = message.reply_to_id
+                                        ? Object.values(groupedMessages)
+                                            .flat()
+                                            .find((msg) => msg.id === message.reply_to_id)
+                                        : null;
+
                                     return (
-                                        <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+                                        <div key={message.id} className={`flex z-50 ${isCurrentUser ? "justify-end" : "justify-start"}`} onDoubleClick={() => handleReply(message)}>
                                             <div className="flex gap-1">
-                                                {isCurrentUser ? "" : <Avatar className="size-6">
-                                                    <AvatarImage src={chatPartner?.avatar_url as string} />
-                                                    <AvatarFallback>FB</AvatarFallback>
-                                                </Avatar>}
+                                                {isCurrentUser ? "" : (
+                                                    <Avatar className="size-6">
+                                                        <AvatarImage src={chatPartner?.avatar_url as string} />
+                                                        <AvatarFallback>FB</AvatarFallback>
+                                                    </Avatar>
+                                                )}
                                                 <Card
                                                     className={`p-2 rounded-lg min-w-40 max-w-xs break-words ${isCurrentUser ? "bg-emerald-100 text-black self-end" : "bg-white text-black self-start"}`}
                                                 >
                                                     <div className="flex flex-col pl-1">
+                                                        {/* Show replied-to message if exists */}
+                                                        {repliedMessage && (
+                                                            <div className="mb-2 p-2 rounded bg-gray-100 text-xs text-gray-700 border-l-4 border-emerald-400">
+                                                                <span className="font-semibold">
+                                                                    {repliedMessage.sender_id === user?.id ? "You" : chatPartner?.full_name || "User"}:
+                                                                </span>
+                                                                <span className="ml-1">{repliedMessage.content}</span>
+                                                            </div>
+                                                        )}
                                                         <div className="text-xs font-medium text-emerald-700 mb-1">
                                                             {!isCurrentUser && (<span>{chatPartner?.full_name}</span>)}
                                                         </div>

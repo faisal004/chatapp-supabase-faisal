@@ -35,3 +35,17 @@ export const sendMessage = async (chatId: string, userId: string, content: strin
 
     return { error };
 };
+
+
+export const replyMessage = async (chatId: string, userId: string, content: string,originalMessageId:string) => {
+    const { data, error } = await supabase
+    .from('messages')
+    .insert([{
+      chat_id: chatId,
+      content: content,
+      sender_id: userId,
+      reply_to_id: originalMessageId  // <-- this links the reply
+    }]);
+
+    return { error };
+};
