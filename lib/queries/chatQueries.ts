@@ -38,7 +38,7 @@ export const sendMessage = async (chatId: string, userId: string, content: strin
 
 
 export const replyMessage = async (chatId: string, userId: string, content: string,originalMessageId:string) => {
-    const { data, error } = await supabase
+    const {  error } = await supabase
     .from('messages')
     .insert([{
       chat_id: chatId,

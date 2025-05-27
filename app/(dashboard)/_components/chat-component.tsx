@@ -4,7 +4,7 @@ import { fetchMessages, replyMessage, sendMessage } from "@/lib/queries/chatQuer
 import React, { useEffect, useRef, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import { ChevronsUpDown, Divide, Paperclip, Search, Send, Smile, X } from "lucide-react";
+import { ChevronsUpDown,  Paperclip, Search, Send, Smile, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EmojiPicker from "emoji-picker-react";

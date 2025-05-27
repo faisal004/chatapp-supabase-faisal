@@ -73,14 +73,12 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [loading, setLoading] = useState(false);
   const user = useCurrentUser();
   const [userTags, setUserTags] = useState<Record<string, string[]>>({});
-  const [label, setLabel] = useState("")
   const { setOpen } = useOpenStore();
   const [tagFilter, setTagFilter] = useState<string>("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
-  const allTagsss = Array.from(new Set(Object.values(userTags).flat()));
   // Filter by tag
   let filteredUsers = tagFilter && tagFilter !== "all"
     ? users.filter(u => userTags[u.id]?.includes(tagFilter))
