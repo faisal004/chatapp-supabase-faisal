@@ -4,7 +4,7 @@ import { fetchMessages, replyMessage, sendMessage } from "@/lib/queries/chatQuer
 import React, { useEffect, useRef, useState } from "react";
 import { Tables } from "@/lib/database.types";
 import { createClient } from "@/util/supabase/client";
-import { ChevronsUpDown, Paperclip, Search, Send, Smile } from "lucide-react";
+import { ChevronsUpDown, Divide, Paperclip, Search, Send, Smile, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EmojiPicker from "emoji-picker-react";
@@ -252,8 +252,23 @@ const ChatComponent = ({ id }: { id: string }) => {
 
             {id && (
                 <div className="bg-white  border-t border-gray-200 z-50 absolute bottom-0 w-full">
-                    <div className="flex items-center bg-white  p-1">
+                    {replyingTo && <div className="flex items-center justify-between p-3 bg-emerald-100 border-l-4  border-green-700">
+                    <div className="flex flex-col">
+                    <span className="font-semibold">
+                            {replyingTo.sender_id === user?.id ? "You" : chatPartner?.full_name || "User"}:
+                        </span>
+                        <div>
+                        {replyingTo.content}
 
+                        </div>
+                    </div>
+           
+
+                        <button onClick={() => setReplyingTo(null)} className="size-4 bg-white flex items-center justify-center">
+                            <X className="size-3" />
+                        </button>
+                    </div>}
+                    <div className="flex items-center bg-white  p-1">
 
                         <textarea
                             value={newMessage}
@@ -312,7 +327,7 @@ const ChatComponent = ({ id }: { id: string }) => {
 
                                 className="hidden md:flex items-center gap-3 h-7 "
                             >
-                           <Image src="/logo1.png" alt="periskope" width={16} height={16} className="rounded-full" />      <span> Periskope </span> <ChevronsUpDown />
+                                <Image src="/logo1.png" alt="periskope" width={16} height={16} className="rounded-full" />      <span> Periskope </span> <ChevronsUpDown />
                             </Button>
 
                         </div>
