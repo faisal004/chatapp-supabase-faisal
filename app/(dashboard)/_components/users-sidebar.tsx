@@ -124,10 +124,13 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       setLoading(false);
     }
   };
-  const handleRemoveTag = async (chatUser: Profile, tag: string) => {
+  const handleRemoveTag = async (chatUser: Profile, tagName: string) => {
     setLoading(true);
     try {
-      await removeTag(user.id, chatUser.id, tag);
+      // Find tag id by name
+      const tagObj = allTags.find(t => t.name === tagName);
+      if (!tagObj) throw new Error('Tag not found');
+      await removeTag(user.id, chatUser.id, tagObj.id);
       setShowAllTagsUser(null);
       fetchTags();
     } catch (error) {

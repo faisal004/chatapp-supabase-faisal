@@ -27,13 +27,13 @@ export const getTags = async (userId: string) => {
     return { data: userTags };
 };
 
-export const removeTag = async (from: string, to: string, tag: string) => {
+export const removeTag = async (from: string, to: string, tagId: string) => {
     const { error } = await supabase
         .from('user_tags')
         .delete()
         .eq('from_user_id', from)
         .eq('to_user_id', to)
-        .eq('tag', tag);
+        .eq('tag_id', tagId);
     return { error };
 };
 
