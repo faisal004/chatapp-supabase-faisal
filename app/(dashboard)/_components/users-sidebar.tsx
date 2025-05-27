@@ -7,6 +7,14 @@ import { useOpenStore } from "@/store/new-chat";
 import { Phone } from "lucide-react";
 import { IoChatbubbleEllipsesOutline, IoFilter } from "react-icons/io5";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -95,8 +103,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     const tagsObj: Record<string, string[]> = {};
     for (const u of users) {
       const { data } = await getTags(u.id);
-      console.log(data,"faisal")
-      tagsObj[u.id] = data?.map((tag) => tag.tag?.name || '') || [];
+      tagsObj[u.id] = (data || []).map((tag) => tag.tag?.name || '').filter((name) => name !== '');
     }
     setUserTags(tagsObj);
   };
@@ -276,12 +283,18 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
-            {allTags && <select value={selectedTagId ?? ''} onChange={e => setSelectedTagId(e.target.value)}>
-              <option value="">Select tag</option>
-              {allTags.map(tag => (
-                <option key={tag.id} value={tag.id}>{tag.name}</option>
-              ))}
-            </select>}
+            <Select value={selectedTagId ?? ''} onValueChange={(value) => setSelectedTagId(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select tag" />
+              </SelectTrigger>
+              <SelectContent>
+                {allTags.map((tag) => (
+                  <SelectItem key={tag.id} value={tag.id} className="capitalize">
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading || !selectedTagId}>
               {loading ? "Saving..." : "Add"}
             </Button>
