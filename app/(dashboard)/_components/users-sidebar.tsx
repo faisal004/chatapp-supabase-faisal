@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTag, getTags, removeTag } from "@/lib/queries/tags";
+import { addTag, getTags, removeTag, Tag } from "@/lib/queries/tags";
 import useCurrentUser from "@/hooks/useCurrentUser";
-
+import { getAlTags } from "@/lib/queries/tags";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,9 +70,9 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
   const [tagFilter, setTagFilter] = useState<string>("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-
-  const allTags = Array.from(new Set(Object.values(userTags).flat()));
-
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
+  const allTagsss = Array.from(new Set(Object.values(userTags).flat()));
   // Filter by tag
   let filteredUsers = tagFilter && tagFilter !== "all"
     ? users.filter(u => userTags[u.id]?.includes(tagFilter))
@@ -94,25 +94,22 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     if (!user?.id || users.length === 0) return;
     const tagsObj: Record<string, string[]> = {};
     for (const u of users) {
-      const { data } = await getTags(u.id, user.id);
-      if (data && data.length > 0) {
-        tagsObj[u.id] = data.map(tagObj => tagObj.tag);
-      }
+      const { data } = await getTags(u.id);
+      tagsObj[u.id] = data?.map((tag) => tag.id || '') || [];
     }
     setUserTags(tagsObj);
   };
   useEffect(() => {
-
     fetchTags();
   }, [user?.id, users]);
   const handleAddTag = async (chatUser: Profile) => {
-    if (label.trim() === "") return;
+    if (!selectedTagId) return;
     setLoading(true);
     try {
-      await addTag(user.id, chatUser.id, label);
+      await addTag(user.id, chatUser.id, selectedTagId);
       setModalUser(null);
-      setLabel("");
-      fetchTags()
+      setSelectedTagId("");
+      fetchTags();
     } catch (error) {
       console.error("Error adding tag:", error);
     } finally {
@@ -131,7 +128,13 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    const fetchAllTags = async () => {
+      const { data } = await getAlTags();
+      setAllTags(data || []);
+    };
+    fetchAllTags();
+  }, []);
   return (
     <div className="h-[calc(100vh-58px)]  w-full relative ">
       <div className="absolute bottom-0 right-1 bg-[#15803d] hover:bg-[#15803d]/90 text-white rounded-full p-3 z-40 cursor-pointer ">
@@ -176,7 +179,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             <DropdownMenuItem onClick={() => setTagFilter("all")}>All</DropdownMenuItem>
 
             {allTags.map(tag => (
-              <DropdownMenuItem key={tag} onClick={() => setTagFilter(tag)}>{tag}</DropdownMenuItem>
+              <DropdownMenuItem key={tag.id} onClick={() => setTagFilter(tag.name)}>{tag.name}</DropdownMenuItem>
 
             ))}
 
@@ -271,13 +274,17 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
               You can add tag/label to {modalUser?.full_name}.
             </DialogDescription>
           </DialogHeader>
-          <Input
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-          />
-          <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading}>
-            {loading ? "Saving..." : "Add"}
-          </Button>
+          <div className="flex flex-col gap-2">
+            {allTags && <select value={selectedTagId as string} onChange={e => setSelectedTagId(e.target.value)}>
+              <option value="">Select tag</option>
+              {allTags.map(tag => (
+                <option key={tag.id} value={tag.id}>{tag.name}</option>
+              ))}
+            </select>}
+            <Button onClick={() => handleAddTag(modalUser as Profile)} disabled={loading || !selectedTagId}>
+              {loading ? "Saving..." : "Add"}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
       <Dialog open={!!showAllTagsUser} onOpenChange={(open) => !open && setShowAllTagsUser(null)}>

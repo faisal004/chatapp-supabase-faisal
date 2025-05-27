@@ -138,21 +138,21 @@ export type Database = {
           created_at: string | null
           from_user_id: string | null
           id: string
-          tag: string
+          tag_id: string | null
           to_user_id: string | null
         }
         Insert: {
           created_at?: string | null
           from_user_id?: string | null
           id?: string
-          tag: string
+          tag_id?: string | null
           to_user_id?: string | null
         }
         Update: {
           created_at?: string | null
           from_user_id?: string | null
           id?: string
-          tag?: string
+          tag_id?: string | null
           to_user_id?: string | null
         }
         Relationships: [
@@ -161,6 +161,13 @@ export type Database = {
             columns: ["from_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tag"
             referencedColumns: ["id"]
           },
           {
