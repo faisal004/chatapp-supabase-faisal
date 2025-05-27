@@ -220,7 +220,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                     e.stopPropagation();
                     setShowAllTagsUser(u);
                   }}
-                  className="inline-flex items-center justify-center px-2 py-[1px] text-[10px] h-5 font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
+                  className="inline-flex items-center capitalize justify-center px-2 py-[1px] text-[10px] h-5 font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] mb-1"
                 >
                   {tag}
                 </span>
@@ -313,7 +313,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
                 ? userTags[showAllTagsUser.id].map((tag, idx) => (
                   <div
                     key={tag + idx}
-                    className="flex items-center justify-between  gap-2 w-20 px-2 py-[1px] h-8 text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] relative"
+                    className="flex items-center capitalize justify-between  gap-2 w-20 px-2 py-[1px] h-8 text-[10px] font-bold leading-none bg-green-100 border-[1px] border-green-400 text-green-600 rounded-[1px] relative"
                   >
                     <span className="">{tag}</span>
                     <button
