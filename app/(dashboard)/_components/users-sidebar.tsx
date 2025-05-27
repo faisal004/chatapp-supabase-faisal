@@ -96,7 +96,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     for (const u of users) {
       const { data } = await getTags(u.id);
       console.log(data,"faisal")
-      tagsObj[u.id] = data?.map((tag) => tag.id) || [];
+      tagsObj[u.id] = data?.map((tag) => tag.tag?.name || '') || [];
     }
     setUserTags(tagsObj);
   };
