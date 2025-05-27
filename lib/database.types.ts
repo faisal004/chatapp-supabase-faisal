@@ -51,24 +51,24 @@ export type Database = {
           content: string
           created_at: string | null
           id: string
+          reply_to_id: string | null
           sender_id: string | null
-          reply_to_id: string | null // Added for reply feature
         }
         Insert: {
           chat_id?: string | null
           content: string
           created_at?: string | null
           id?: string
+          reply_to_id?: string | null
           sender_id?: string | null
-          reply_to_id?: string | null // Added for reply feature
         }
         Update: {
           chat_id?: string | null
           content?: string
           created_at?: string | null
           id?: string
+          reply_to_id?: string | null
           sender_id?: string | null
-          reply_to_id?: string | null // Added for reply feature
         }
         Relationships: [
           {
@@ -79,17 +79,17 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "messages_reply_to_id_fkey"
             columns: ["reply_to_id"]
             isOneToOne: false
             referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -112,6 +112,24 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+        }
+        Relationships: []
+      }
+      tag: {
+        Row: {
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          name?: string
         }
         Relationships: []
       }
