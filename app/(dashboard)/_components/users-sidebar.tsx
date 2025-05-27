@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTag, getTags, removeTag, Tag } from "@/lib/queries/tags";
+import { addTag,  getTags, removeTag, Tag } from "@/lib/queries/tags";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { getAlTags } from "@/lib/queries/tags";
 import {
@@ -95,7 +95,8 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     const tagsObj: Record<string, string[]> = {};
     for (const u of users) {
       const { data } = await getTags(u.id);
-      tagsObj[u.id] = data?.map((tag) => tag.id || '') || [];
+      console.log(data,"faisal")
+      tagsObj[u.id] = data?.map((tag) => tag.id) || [];
     }
     setUserTags(tagsObj);
   };
@@ -275,7 +276,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
-            {allTags && <select value={selectedTagId as string} onChange={e => setSelectedTagId(e.target.value)}>
+            {allTags && <select value={selectedTagId ?? ''} onChange={e => setSelectedTagId(e.target.value)}>
               <option value="">Select tag</option>
               {allTags.map(tag => (
                 <option key={tag.id} value={tag.id}>{tag.name}</option>
