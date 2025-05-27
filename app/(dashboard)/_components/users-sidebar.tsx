@@ -100,7 +100,7 @@ const UsersSidebar = ({ users, startChat }: SidebarProps) => {
     if (!user?.id || users.length === 0) return;
     const tagsObj: Record<string, string[]> = {};
     for (const u of users) {
-      const { data } = await getTags(u.id);
+      const { data } = await getTags(u.id, user.id);
       tagsObj[u.id] = (data || []).map((tag) => tag.tag?.name || '').filter((name) => name !== '');
     }
     setUserTags(tagsObj);

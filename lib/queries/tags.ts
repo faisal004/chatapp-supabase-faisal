@@ -18,11 +18,12 @@ export const addTag = async (currentUserId: string, targetUserId: string, select
     return { data, error };
 };
 
-export const getTags = async (userId: string) => {
+export const getTags = async (toUserId: string, fromUserId: string) => {
     const { data: userTags } = await supabase
         .from('user_tags')
         .select('*, tag(*)')
-        .eq('to_user_id', userId);
+        .eq('to_user_id', toUserId)
+        .eq('from_user_id', fromUserId);
 
     return { data: userTags };
 };
